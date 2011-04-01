@@ -1,0 +1,80 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SmartSearch="clr-namespace:WPFCommons.SmartSearch">
+    <Style TargetType="{x:Type SmartSearch:SmartSearchCc}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type SmartSearch:SmartSearchCc}">
+                    <!-- SMART SEARCH GRID -->
+                    <Grid  x:Name="PART_GridMainContainer"  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"  
+                          VerticalAlignment="{TemplateBinding VerticalAlignment}" 
+                          Background="{TemplateBinding Background}"
+                          Margin="{TemplateBinding Margin}">
+                        <Grid.Resources>
+                            <ImageBrush x:Key="imgSearch" ImageSource="../Resources/search_32.png" />
+                            <Storyboard x:Key="SbExpand">
+                                <DoubleAnimation From="0" To="1" Duration="00:00:00.3" Storyboard.TargetName="PART_GridSscContainer" Storyboard.TargetProperty="(FrameworkElement.Opacity)" />
+                            </Storyboard>
+                            <Storyboard x:Key="SbCollapsed">
+                                <DoubleAnimation From="1" To="0" Duration="00:00:00.3" Storyboard.TargetName="PART_GridSscContainer" Storyboard.TargetProperty="(FrameworkElement.Opacity)" />
+                            </Storyboard>
+                        </Grid.Resources>
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked" SourceName="PART_ToggleCpntVisibilityBtn">
+                                <StopStoryboard BeginStoryboardName="SbCollapsed_BeginStoryboard" />
+                                <BeginStoryboard x:Name="SbExpand_BeginStoryboard" Storyboard="{StaticResource SbExpand}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked" SourceName="PART_ToggleCpntVisibilityBtn">
+                                <StopStoryboard BeginStoryboardName="SbExpand_BeginStoryboard" />
+                                <BeginStoryboard x:Name="SbCollapsed_BeginStoryboard" Storyboard="{StaticResource SbCollapsed}" />
+                            </EventTrigger>
+                        </Grid.Triggers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid  x:Name="PART_GridSscContainer" Grid.Column="0">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Setter Property="Height" Value="Auto"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=PART_ToggleCpntVisibilityBtn, Path=IsChecked}" Value="false">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" 
+                                   x:Name="PART_LblSearch" 
+                                   Text="Filter" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{TemplateBinding Foreground}" />
+                            <TextBox Grid.Column="1" 
+                                 x:Name="PART_TxtInputSs" 
+                                 Width="Auto" 
+                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"  
+                                 VerticalAlignment="Center" 
+                                 Margin="5,0,0,0" 
+                                 Foreground="{TemplateBinding Foreground}" />
+                            <TextBlock Grid.Column="2" 
+                                   x:Name="PART_TxtNbResults"  
+                                   Text="{TemplateBinding Results}" 
+                                   HorizontalAlignment="Stretch" 
+                                   VerticalAlignment="Center" 
+                                   Margin="5,0,2,0" 
+                                   Foreground="{TemplateBinding Foreground}" />
+                        </Grid>
+                        <ToggleButton x:Name="PART_ToggleCpntVisibilityBtn" Height="18" Width="18"      HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+                            <Rectangle Fill="{StaticResource imgSearch}" Width="14" Height="14" />
+                        </ToggleButton>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
