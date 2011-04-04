@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
 
-namespace XHedge.Client.Tests
+namespace BCharppe.WPFSmartSearch.Test
 {
     /// <summary>
     /// Enable to instantiate UI controls for unit tests

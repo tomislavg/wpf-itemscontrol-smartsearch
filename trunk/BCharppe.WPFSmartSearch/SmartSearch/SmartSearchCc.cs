@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace WPFCommons.SmartSearch
+namespace BCharppe.WPFSmartSearch.SmartSearch
 {
     /// <summary>
     /// Smart Search custom control

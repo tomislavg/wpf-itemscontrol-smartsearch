@@ -3,7 +3,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace WPFCommons.SmartSearch
+namespace BCharppe.WPFSmartSearch.SmartSearch
 {
     /// <summary>
     /// This class holds the logic that handle the execution of a delayed/differed action

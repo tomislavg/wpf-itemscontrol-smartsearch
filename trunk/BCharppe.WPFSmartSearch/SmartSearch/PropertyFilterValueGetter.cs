@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection;
 
-namespace WPFCommons.SmartSearch
+namespace BCharppe.WPFSmartSearch.SmartSearch
 {
     /// <summary>
     /// Wrapper that encapsulate filter property informations as well as precompiled value getter

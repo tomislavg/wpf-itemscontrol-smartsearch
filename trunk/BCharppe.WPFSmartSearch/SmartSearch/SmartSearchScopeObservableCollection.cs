@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace WPFCommons.SmartSearch
+namespace BCharppe.WPFSmartSearch.SmartSearch
 {
     /// <summary>
     /// Derived class used to be able to manage filter application when a collection item property changed
