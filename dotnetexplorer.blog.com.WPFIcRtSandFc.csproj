@@ -8,8 +8,8 @@
     <ProjectGuid>{3F02155B-F171-4BB1-A1D7-8407F15609F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WPFCommons</RootNamespace>
-    <AssemblyName>WPFCommons</AssemblyName>
+    <RootNamespace>dotnetexplorer.blog.com.WPFIcRtSandFc</RootNamespace>
+    <AssemblyName>dotnetexplorer.blog.com.WPFIcRtSandFc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -61,7 +61,7 @@
     <Compile Include="SmartSearch\ShowHideButtonLocationValue.cs" />
     <Compile Include="SmartSearch\PropertyFilter.cs" />
     <Compile Include="SmartSearch\PropertyFilterValueGetter.cs" />
-    <Compile Include="SmartSearch\SmartSearchCc.cs" />
+    <Compile Include="SmartSearch\SmartSearchRoot.cs" />
     <Compile Include="SmartSearch\SmartSearchScope.cs" />
     <Compile Include="SmartSearch\SmartSearchScopeObservableCollection.cs" />
   </ItemGroup>

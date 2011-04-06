@@ -1,4 +1,4 @@
-﻿namespace WPFCommons.SmartSearch
+﻿namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   Indicate filter mode configuration (AND || OR)

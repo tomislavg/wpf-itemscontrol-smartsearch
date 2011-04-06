@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 #endregion
 
-namespace WPFCommons.SmartSearch
+namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   Wrapper that encapsulate filter property informations as well as precompiled value getter
