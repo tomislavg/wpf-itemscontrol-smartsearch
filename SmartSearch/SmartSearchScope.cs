@@ -134,7 +134,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 (Func<object, string>)
                 Delegate.CreateDelegate(typeof(Func<object, string>), this, "GetConcatenatedCandidateValue", true);
 
-            initialize = (Action)Delegate.CreateDelegate(typeof(Action), this, "InitializeCandidatesCache", true);
+            initialize = (Action)Delegate.CreateDelegate(typeof(Action), this, "InitializeFilterScope", true);
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// <summary>
         /// Initialize the candidate cache
         /// </summary>
-        private void InitializeCandidatesCache()
+        private void InitializeFilterScope()
         {
             // Subscribe to real original source (the one from the VM or whatever) collection changes
             _originalSource =
