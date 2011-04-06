@@ -1,31 +1,51 @@
-﻿#region
-
-using System;
-using System.Windows;
-using System.Windows.Data;
-
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PropertyFilter.cs" company="dotnetexplorer.blog.com">
+//   2011
+// </copyright>
+// <summary>
+//   Define an object property on wich filter should be applied
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Data;
+
     /// <summary>
-    ///   Define an object property on wich filter should be applied
+    /// Define an object property on wich filter should be applied
     /// </summary>
     public sealed class PropertyFilter : FrameworkElement
     {
+        /// <summary>
+        ///   The text format property.
+        /// </summary>
         public static readonly DependencyProperty TextFormatProperty =
-            DependencyProperty.Register("TextFormat", typeof (string), typeof (PropertyFilter),
+            DependencyProperty.Register("TextFormat", typeof (string), typeof (PropertyFilter), 
                                         new UIPropertyMetadata(string.Empty, OnTextFormatChanged));
 
+        /// <summary>
+        ///   The value converter property.
+        /// </summary>
         public static readonly DependencyProperty ValueConverterProperty =
-            DependencyProperty.Register("ValueConverter", typeof (IValueConverter), typeof (PropertyFilter),
+            DependencyProperty.Register("ValueConverter", typeof (IValueConverter), typeof (PropertyFilter), 
                                         new UIPropertyMetadata(null, OnValueConverterChanged));
 
+        /// <summary>
+        ///   The conver return.
+        /// </summary>
         private readonly Func<object, string> converReturn;
 
 
+        /// <summary>
+        ///   The transform mode.
+        /// </summary>
         private ValueTransform transformMode = ValueTransform.None;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "PropertyFilter" /> class.
+        /// </summary>
         public PropertyFilter()
         {
             converReturn =
@@ -34,10 +54,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyFilter"/> class. 
         ///   Constructor with monitor parameter
         /// </summary>
-        /// <param name = "fieldName"></param>
-        /// <param name = "monitor"></param>
+        /// <param name="fieldName">
+        /// </param>
+        /// <param name="monitor">
+        /// </param>
         public PropertyFilter(string fieldName, bool monitor)
         {
             FieldName = fieldName;
@@ -45,9 +68,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyFilter"/> class. 
         ///   Constructor with property name only
         /// </summary>
-        /// <param name = "fieldName"></param>
+        /// <param name="fieldName">
+        /// </param>
         public PropertyFilter(string fieldName)
         {
             FieldName = fieldName;
@@ -64,6 +89,9 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         public bool MonitorPropertyChanged { get; set; }
 
 
+        /// <summary>
+        ///   Gets or sets TransformMode.
+        /// </summary>
         private ValueTransform TransformMode
         {
             get { return transformMode; }
@@ -71,6 +99,9 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
 
+        /// <summary>
+        ///   Gets or sets TextFormat.
+        /// </summary>
         public string TextFormat
         {
             get { return (string) GetValue(TextFormatProperty); }
@@ -78,6 +109,9 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
 
+        /// <summary>
+        ///   Gets or sets ValueConverter.
+        /// </summary>
         public IValueConverter ValueConverter
         {
             get { return (IValueConverter) GetValue(ValueConverterProperty); }
@@ -85,16 +119,45 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
 
+        /// <summary>
+        /// The on text format changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void OnTextFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SetTransform(d, ValueTransform.TextFormat);
         }
 
+        /// <summary>
+        /// The on value converter changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void OnValueConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SetTransform(d, ValueTransform.ValueConverter);
         }
 
+        /// <summary>
+        /// The set transform.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="transformation">
+        /// The transformation.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
         private static void SetTransform(DependencyObject d, ValueTransform transformation)
         {
             var ssvc = (PropertyFilter) d;
@@ -104,23 +167,37 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 {
                     throw new InvalidOperationException(
                         string.Format(
-                            "ValueTransform has already been set to {0} for this PropertyFilter [FielName = {1}]",
+                            "ValueTransform has already been set to {0} for this PropertyFilter [FielName = {1}]", 
                             ssvc.TransformMode, ssvc.FieldName));
                 }
+
                 ssvc.TransformMode = transformation;
             }
         }
 
+        /// <summary>
+        /// The convert.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The convert.
+        /// </returns>
         public string Convert(object value)
         {
             return converReturn(value);
         }
 
         /// <summary>
-        ///   Decide which formating to apply given the value transform value
+        /// Decide which formating to apply given the value transform value
         /// </summary>
-        /// <param name = "value">Value to format</param>
-        /// <returns>Formated value</returns>
+        /// <param name="value">
+        /// Value to format
+        /// </param>
+        /// <returns>
+        /// Formated value
+        /// </returns>
         private string ReturnConvert(object value)
         {
             if (value != null)
@@ -137,14 +214,19 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                         return string.Empty;
                 }
             }
+
             return string.Empty;
         }
 
         /// <summary>
-        ///   Format value type values with a given string formating mask
+        /// Format value type values with a given string formating mask
         /// </summary>
-        /// <param name = "value">Original Value to format</param>
-        /// <returns>String formated value</returns>
+        /// <param name="value">
+        /// Original Value to format
+        /// </param>
+        /// <returns>
+        /// String formated value
+        /// </returns>
         private string TextFormating(object value)
         {
             switch (Type.GetTypeCode(value.GetType()))
@@ -180,11 +262,25 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
         #region Nested type: ValueTransform
 
+        /// <summary>
+        /// The value transform.
+        /// </summary>
         private enum ValueTransform
         {
-            None,
-            TextFormat,
-            ValueConverter,
+            /// <summary>
+            ///   The none.
+            /// </summary>
+            None, 
+
+            /// <summary>
+            ///   The text format.
+            /// </summary>
+            TextFormat, 
+
+            /// <summary>
+            ///   The value converter.
+            /// </summary>
+            ValueConverter, 
         }
 
         #endregion

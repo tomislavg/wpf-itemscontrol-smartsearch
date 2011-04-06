@@ -1,41 +1,65 @@
-#region
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DelayedAction.cs" company="dotnetexplorer.blog.com">
+//   2011
+// </copyright>
+// <summary>
+//   This class holds the logic that handle the execution of a delayed/differed action
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
-
-#endregion
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
+    using System;
+    using System.Threading;
+    using System.Windows;
+    using System.Windows.Threading;
+
     /// <summary>
-    ///   This class holds the logic that handle the execution of a delayed/differed action
+    /// This class holds the logic that handle the execution of a delayed/differed action
     /// </summary>
     internal sealed class DelayedAction
     {
-        private readonly Dispatcher dispatcher;
+        /// <summary>
+        ///   UI Dispatcher
+        /// </summary>
+        private readonly Dispatcher _dispatcher;
 
-        private readonly Timer timer;
+        /// <summary>
+        ///   Delay timer
+        /// </summary>
+        private readonly Timer _timer;
 
+        /// <summary>
+        ///   Prevents a default instance of the <see cref = "DelayedAction" /> class from being created.
+        /// </summary>
         private DelayedAction()
         {
-            dispatcher = Application.Current != null ? Application.Current.Dispatcher : Dispatcher.CurrentDispatcher;
-        }
-
-        private DelayedAction(Action action)
-            : this()
-        {
-            timer = new Timer(delegate { dispatcher.Invoke(action); });
+            _dispatcher = Application.Current != null ? Application.Current.Dispatcher : Dispatcher.CurrentDispatcher;
         }
 
         /// <summary>
-        ///   Creates a new DeferredAction.
+        /// Initializes a new instance of the <see cref="DelayedAction"/> class.
         /// </summary>
-        /// <param name = "action">
-        ///   The action that will be deferred. It is not performed until 
-        ///   after <see cref = "Defer" /> is called.
+        /// <param name="action">
+        /// The action to execute
         /// </param>
+        private DelayedAction(Action action)
+            : this()
+        {
+            _timer = new Timer(delegate { _dispatcher.Invoke(action); });
+        }
+
+        /// <summary>
+        /// Creates a new DeferredAction.
+        /// </summary>
+        /// <param name="action">
+        /// The action that will be deferred. It is not performed until 
+        ///   <see cref="Defer"/> is called.
+        /// </param>
+        /// <returns>
+        /// The delayed
+        /// </returns>
         public static DelayedAction Create(Action action)
         {
             if (action == null)
@@ -47,17 +71,17 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Defers performing the action until after time elapses. 
+        /// Defers performing the action until after time elapses. 
         ///   Repeated calls will reschedule the action
         ///   if it has not already been performed.
         /// </summary>
-        /// <param name = "delay">
-        ///   The amount of time to wait before performing the action.
+        /// <param name="delay">
+        /// The amount of time to wait before performing the action.
         /// </param>
         public void Defer(TimeSpan delay)
         {
             // Fire action when time elapses (with no subsequent calls).
-            timer.Change(delay, TimeSpan.FromMilliseconds(-1));
+            _timer.Change(delay, TimeSpan.FromMilliseconds(-1));
         }
     }
 }
