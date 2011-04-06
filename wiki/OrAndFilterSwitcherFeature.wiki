@@ -1,0 +1,11 @@
+#summary One-sentence summary of this page.
+#labels AND,OR
+
+= Introduction =
+
+Upcomming feature : OR/AND filter mode switcher
+
+
+= Details =
+
+  * A button will be available to switch between "AND" and "OR" filter / search mode.
