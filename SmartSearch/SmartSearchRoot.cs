@@ -1,18 +1,23 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SmartSearchRoot.cs" company="dotnetexplorer.blog.com">
+//   2011
+// </copyright>
+// <summary>
+//   Smart Search custom control
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
+
     /// <summary>
-    ///   Smart Search custom control
+    /// Smart Search custom control
     /// </summary>
     [TemplatePart(Name = "PART_TxtInputSs")]
     [TemplatePart(Name = "PART_ToggleCpntVisibilityBtn")]
@@ -95,16 +100,17 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         private List<string> searchTerms;
 
         /// <summary>
+        ///   Initializes static members of the <see cref = "SmartSearchRoot" /> class. 
         ///   Private static contructor needed when building custom WPF control
         /// </summary>
         static SmartSearchRoot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (SmartSearchRoot),
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (SmartSearchRoot), 
                                                      new FrameworkPropertyMetadata(typeof (SmartSearchRoot)));
         }
 
         /// <summary>
-        ///   When overridden in a derived class, is invoked whenever application code or internal processes call <see cref = "M:System.Windows.FrameworkElement.ApplyTemplate" />.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -112,14 +118,17 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             {
                 PART_BtnSwitchAndOr.Click -= PartBtnSwitchAndOrSwitch;
             }
+
             if (PART_TxtInputs != null)
             {
                 PART_TxtInputs.TextChanged -= TxtInputSsTextChanged;
             }
+
             if (PART_ToggleCpntVisibilityBtn != null)
             {
                 PART_ToggleCpntVisibilityBtn.Click -= PartToggleCpntVisibilityBtnChecked;
             }
+
             base.OnApplyTemplate();
 
 
@@ -132,16 +141,18 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 var tb = new TextBlock {FontSize = 8, Text = filterMode.ToString()};
                 PART_BtnSwitchAndOr.Content = tb;
             }
+
             if (PART_TxtInputs != null)
             {
                 PART_TxtInputs.TextChanged += TxtInputSsTextChanged;
             }
+
             if (PART_ToggleCpntVisibilityBtn != null)
             {
                 PART_ToggleCpntVisibilityBtn.Click += PartToggleCpntVisibilityBtnChecked;
             }
 
-            //Subscribe to each scope results notifications
+            // Subscribe to each scope results notifications
             foreach (object item in Items)
             {
                 var ssc = (SmartSearchScope) item;
@@ -149,10 +160,19 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 ssc.IncreaseResultsEvent += SscIncreaseResultsEvent;
             }
 
-            //Initialize toggle button margins
+            // Initialize toggle button margins
             ManageToggleButtonMargins();
         }
 
+        /// <summary>
+        /// The part btn switch and or switch.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void PartBtnSwitchAndOrSwitch(object sender, RoutedEventArgs e)
         {
             filterMode = filterMode == FilterMode.AND ? FilterMode.OR : FilterMode.AND;
@@ -164,31 +184,37 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   Callback executed when component's visibility button is clicked
+        /// Callback executed when component's visibility button is clicked
         /// </summary>
-        /// <param name = "sender">Toggle button</param>
-        /// <param name = "e">Event args</param>
+        /// <param name="sender">
+        /// Toggle button
+        /// </param>
+        /// <param name="e">
+        /// Event args
+        /// </param>
         private void PartToggleCpntVisibilityBtnChecked(object sender, RoutedEventArgs e)
         {
             var tgb = sender as ToggleButton;
             if (tgb != null)
             {
-                //if checked, set runtime margins
+                // if checked, set runtime margins
                 if (tgb.IsChecked.HasValue && tgb.IsChecked.Value)
                 {
                     tgb.Margin = runtimeComponentVisibleMargin;
                 }
-                    //if not
+                    
+
+// if not
                 else
                 {
-                    //set initialization margins
+                    // set initialization margins
                     ManageToggleButtonMargins();
                 }
             }
         }
 
         /// <summary>
-        ///   Manage component's visibility button margins allocation when component is not visible
+        /// Manage component's visibility button margins allocation when component is not visible
         /// </summary>
         private void ManageToggleButtonMargins()
         {
@@ -213,10 +239,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   Callback executed when a scope notifies results update
+        /// Callback executed when a scope notifies results update
         /// </summary>
-        /// <param name = "sender">SmarSearchScope object</param>
-        /// <param name = "eventArgs">N/A</param>
+        /// <param name="sender">
+        /// SmarSearchScope object
+        /// </param>
+        /// <param name="eventArgs">
+        /// N/A
+        /// </param>
         private void SscIncreaseResultsEvent(object sender, EventArgs eventArgs)
         {
             if (Items.Cast<SmartSearchScope>().Any(s => s.DataControl == null))
@@ -229,10 +259,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   Event raised when input text is modified
+        /// Event raised when input text is modified
         /// </summary>
-        /// <param name = "sender">Event sender</param>
-        /// <param name = "e">Event arguments</param>
+        /// <param name="sender">
+        /// Event sender
+        /// </param>
+        /// <param name="e">
+        /// Event arguments
+        /// </param>
         private void TxtInputSsTextChanged(object sender, RoutedEventArgs e)
         {
             var control = e.OriginalSource as TextBox;
@@ -244,18 +278,22 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   Method handling the unsubscription to filtersearch in the case where input is empty after filter has been executed
+        /// Method handling the unsubscription to filtersearch in the case where input is empty after filter has been executed
         /// </summary>
-        /// <param name = "textInput">Input text</param>
+        /// <param name="textInput">
+        /// Input text
+        /// </param>
         public void FilterTextChanged(string textInput)
         {
             searchInput = textInput;
-            ExecuteFilter(); //When text search is set in the textbox, execute the filter action
-            //ApplySearchCriteria();
+            ExecuteFilter(); // When text search is set in the textbox, execute the filter action
+
+
+// ApplySearchCriteria();
         }
 
         /// <summary>
-        ///   Method handling the delay filter
+        /// Method handling the delay filter
         /// </summary>
         private void ExecuteFilter()
         {
@@ -269,16 +307,16 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Prepare and Apply the filter to the collection view reference
+        /// Prepare and Apply the filter to the collection view reference
         /// </summary>
         private void ApplySearchCriteria()
         {
             searchTerms = searchInput.Split(new[] {Separator}).ToList();
 
-            //Manage if there is really a need to update filter (this excludes empty search string for example)
+            // Manage if there is really a need to update filter (this excludes empty search string for example)
             bool filter = false;
 
-            searchTerms.RemoveAll(term => term == string.Empty); //If last split element is string.empty, remove it
+            searchTerms.RemoveAll(term => term == string.Empty); // If last split element is string.empty, remove it
             previous.RemoveAll(term => term == string.Empty);
             if (filterModeHasChanged && searchTerms.Count > 0)
             {
@@ -299,19 +337,23 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                     }
                 }
             }
-            //If really need to updaet filter
+
+
+// If really need to updaet filter
             if (filter)
             {
-                //Trim end and start spaces
+                // Trim end and start spaces
                 for (int index = 0; index < searchTerms.Count; index++)
                 {
                     searchTerms[index] = searchTerms[index].TrimEnd().TrimStart().ToLowerInvariant();
                 }
+
                 foreach (SmartSearchScope sss in Items)
                 {
                     sss.ApplySearchCriteria(searchTerms, filterMode);
                 }
             }
+
             previous = searchTerms;
         }
 
@@ -319,12 +361,18 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
         // Using a DependencyProperty as the backing store for Results.  This enables animation, styling, binding, etc...
 
+        /// <summary>
+        ///   The results property.
+        /// </summary>
         public static readonly DependencyProperty ResultsProperty =
-            DependencyProperty.Register("Results", typeof (string), typeof (SmartSearchRoot),
+            DependencyProperty.Register("Results", typeof (string), typeof (SmartSearchRoot), 
                                         new UIPropertyMetadata(string.Empty));
 
+        /// <summary>
+        ///   The show hide button location property.
+        /// </summary>
         public static readonly DependencyProperty ShowHideButtonLocationProperty =
-            DependencyProperty.Register("ShowHideButtonLocation", typeof (object), typeof (SmartSearchRoot),
+            DependencyProperty.Register("ShowHideButtonLocation", typeof (object), typeof (SmartSearchRoot), 
                                         new UIPropertyMetadata("None", PinLocationChanged));
 
 
@@ -347,10 +395,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Callback called when show/hide button location property has changed
+        /// Callback called when show/hide button location property has changed
         /// </summary>
-        /// <param name = "d">Smart search control</param>
-        /// <param name = "e">Event argument</param>
+        /// <param name="d">
+        /// Smart search control
+        /// </param>
+        /// <param name="e">
+        /// Event argument
+        /// </param>
         private static void PinLocationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ssc = d as SmartSearchRoot;
@@ -368,9 +420,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Set the show/hide location button
+        /// Set the show/hide location button
         /// </summary>
-        /// <param name = "testenum">Location</param>
+        /// <param name="testenum">
+        /// Location
+        /// </param>
         private void SetPinLocation(ShowHideButtonLocationValue testenum)
         {
             internalShowHideButtonLocation = testenum;
