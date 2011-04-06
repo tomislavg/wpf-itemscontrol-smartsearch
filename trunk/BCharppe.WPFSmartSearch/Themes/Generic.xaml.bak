@@ -1,9 +1,0 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- DO NOT PUT REUSABLE STYLES, TEMPLATES, etc HERE-->
-    <!--REFERENCE ONLY RESOURCEDICTIONNARY USED BY EACH OF YOUR COMPONENTS-->
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/WPFCommons;component/Themes/Styles/SmartSearch.xaml" />
-
-        <!-- Reference here the Resource dictionnary used for your own component -->
-    </ResourceDictionary.MergedDictionaries>
-</ResourceDictionary>
