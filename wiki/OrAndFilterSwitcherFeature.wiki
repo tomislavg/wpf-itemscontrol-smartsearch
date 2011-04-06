@@ -1,5 +1,5 @@
-#summary One-sentence summary of this page.
 #labels AND,OR
+#New feature : beeing able to switch between OR and AND filter mode
 
 = Introduction =
 
