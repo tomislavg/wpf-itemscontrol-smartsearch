@@ -6,7 +6,7 @@ using System.Windows.Data;
 
 #endregion
 
-namespace WPFCommons.SmartSearch
+namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   Define an object property on wich filter should be applied

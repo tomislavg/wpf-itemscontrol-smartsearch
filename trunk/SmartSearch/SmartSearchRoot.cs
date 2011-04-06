@@ -9,7 +9,7 @@ using System.Windows.Controls.Primitives;
 
 #endregion
 
-namespace WPFCommons.SmartSearch
+namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   Smart Search custom control
@@ -17,7 +17,7 @@ namespace WPFCommons.SmartSearch
     [TemplatePart(Name = "PART_TxtInputSs")]
     [TemplatePart(Name = "PART_ToggleCpntVisibilityBtn")]
     [TemplatePart(Name = "PART_BtnSwitchAndOr")]
-    public sealed class SmartSearchCc : ItemsControl
+    public sealed class SmartSearchRoot : ItemsControl
     {
         /// <summary>
         ///   Internal field storing the delay to apply to filter
@@ -97,10 +97,10 @@ namespace WPFCommons.SmartSearch
         /// <summary>
         ///   Private static contructor needed when building custom WPF control
         /// </summary>
-        static SmartSearchCc()
+        static SmartSearchRoot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (SmartSearchCc),
-                                                     new FrameworkPropertyMetadata(typeof (SmartSearchCc)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (SmartSearchRoot),
+                                                     new FrameworkPropertyMetadata(typeof (SmartSearchRoot)));
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace WPFCommons.SmartSearch
                     "One of the search scopes does not bind to a Datagrid or the binded datagrid is not correct");
             int resTemp = Items.Cast<SmartSearchScope>().Sum(sss => sss.Results);
 
-            Results = string.Format("{0} items", resTemp.ToString());
+            Results = string.Format("{0} items", resTemp);
         }
 
 
@@ -320,11 +320,11 @@ namespace WPFCommons.SmartSearch
         // Using a DependencyProperty as the backing store for Results.  This enables animation, styling, binding, etc...
 
         public static readonly DependencyProperty ResultsProperty =
-            DependencyProperty.Register("Results", typeof (string), typeof (SmartSearchCc),
+            DependencyProperty.Register("Results", typeof (string), typeof (SmartSearchRoot),
                                         new UIPropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty ShowHideButtonLocationProperty =
-            DependencyProperty.Register("ShowHideButtonLocation", typeof (object), typeof (SmartSearchCc),
+            DependencyProperty.Register("ShowHideButtonLocation", typeof (object), typeof (SmartSearchRoot),
                                         new UIPropertyMetadata("None", PinLocationChanged));
 
 
@@ -353,7 +353,7 @@ namespace WPFCommons.SmartSearch
         /// <param name = "e">Event argument</param>
         private static void PinLocationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var ssc = d as SmartSearchCc;
+            var ssc = d as SmartSearchRoot;
             if (ssc != null)
             {
                 if (e.NewValue != null)

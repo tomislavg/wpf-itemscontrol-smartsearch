@@ -13,7 +13,7 @@ using System.Windows.Data;
 
 #endregion
 
-namespace WPFCommons.SmartSearch
+namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   This class repersents a search scope defined by a ICollectionView and a FilterColumns property
@@ -30,14 +30,14 @@ namespace WPFCommons.SmartSearch
         ///   DataControl Dependency property
         /// </summary>
         public static readonly DependencyProperty DataControlProperty =
-            DependencyProperty.Register("DataControl", typeof(ItemsControl), typeof(SmartSearchScope),
+            DependencyProperty.Register("DataControl", typeof (ItemsControl), typeof (SmartSearchScope),
                                         new UIPropertyMetadata(null, OnDataControlChanged));
 
         /// <summary>
         ///   Underlying type Dependency property
         /// </summary>
         public static readonly DependencyProperty UnderlyingTypeProperty =
-            DependencyProperty.Register("UnderlyingType", typeof(Type), typeof(SmartSearchScope),
+            DependencyProperty.Register("UnderlyingType", typeof (Type), typeof (SmartSearchScope),
                                         new UIPropertyMetadata(null));
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace WPFCommons.SmartSearch
         {
             concatTestValue =
                 (Func<object, string>)
-                Delegate.CreateDelegate(typeof(Func<object, string>), this, "GetConcatenatedCandidateValue", true);
+                Delegate.CreateDelegate(typeof (Func<object, string>), this, "GetConcatenatedCandidateValue", true);
 
-            initialize = (Action)Delegate.CreateDelegate(typeof(Action), this, "InitializeCandidatesCache", true);
+            initialize = (Action) Delegate.CreateDelegate(typeof (Action), this, "InitializeCandidatesCache", true);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace WPFCommons.SmartSearch
         /// </summary>
         public ItemsControl DataControl
         {
-            get { return (ItemsControl)GetValue(DataControlProperty); }
+            get { return (ItemsControl) GetValue(DataControlProperty); }
             set { SetValue(DataControlProperty, value); }
         }
 
@@ -136,7 +136,7 @@ namespace WPFCommons.SmartSearch
         /// </summary>
         public Type UnderlyingType
         {
-            get { return (Type)GetValue(UnderlyingTypeProperty); }
+            get { return (Type) GetValue(UnderlyingTypeProperty); }
             set { SetValue(UnderlyingTypeProperty, value); }
         }
 
@@ -200,7 +200,7 @@ namespace WPFCommons.SmartSearch
         private void Subscribe()
         {
             sourcePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty,
-                                                                                 typeof(ItemsControl));
+                                                                                 typeof (ItemsControl));
             sourcePropertyDescriptor.AddValueChanged(DataControl, SourceChanged);
         }
 
@@ -312,7 +312,7 @@ namespace WPFCommons.SmartSearch
             }
 
             if (filterMode == FilterMode.AND)
-            //if AND mode, all search terms must be found in object properties
+                //if AND mode, all search terms must be found in object properties
             {
                 if (allSearchFound.All(b => b))
                 {
@@ -353,7 +353,7 @@ namespace WPFCommons.SmartSearch
         {
             //Subscribe to real original source (the one from the VM or whatever) collection changes
             originalSource =
-                 DataControl.ItemsSource as INotifyCollectionChanged;
+                DataControl.ItemsSource as INotifyCollectionChanged;
             if (originalSource != null) originalSource.CollectionChanged += OriginalSourceCollectionChanged;
 
             //Build the property value getters colelction
@@ -469,8 +469,8 @@ namespace WPFCommons.SmartSearch
                     int index = substituteSource.IndexOf(sender);
 
                     var argsReplace = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace,
-                                                                           new List<object> { sender },
-                                                                           new List<object> { sender }, index);
+                                                                           new List<object> {sender},
+                                                                           new List<object> {sender}, index);
                     substituteSource.RaiseCollectionChanged(argsReplace);
                 }
 

@@ -2,7 +2,7 @@
 	<!-- DO NOT PUT REUSABLE STYLES, TEMPLATES, etc HERE--> 
 	<!--REFERENCE ONLY RESOURCEDICTIONNARY USED BY EACH OF YOUR COMPONENTS-->
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="pack://application:,,,/WPFCommons;component/Themes/Styles/SmartSearch.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/dotnetexplorer.blog.com.WPFIcRtSandFc;component/Themes/Styles/SmartSearch.xaml" />
 		<!-- Reference here the Resource dictionnary used for your own component -->
 	</ResourceDictionary.MergedDictionaries>
 

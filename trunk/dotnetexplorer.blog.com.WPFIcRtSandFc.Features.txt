@@ -1,0 +1,4 @@
+* WPFIcRtSandFc stands for WPF ItemsControl RealTime (and static) Search and Filter Control
+
+* Features : 
+ - Coming Soon...

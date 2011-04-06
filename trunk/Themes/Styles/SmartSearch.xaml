@@ -1,8 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SmartSearch="clr-namespace:WPFCommons.SmartSearch">
-	<Style TargetType="{x:Type SmartSearch:SmartSearchCc}">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SmartSearch1="clr-namespace:dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch">
+	<Style TargetType="{x:Type SmartSearch1:SmartSearchRoot}">
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type SmartSearch:SmartSearchCc}">
+				<ControlTemplate TargetType="{x:Type SmartSearch1:SmartSearchRoot}">
 					<!-- SMART SEARCH GRID -->
 					<Grid x:Name="PART_GridMainContainer" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}">
 						<Grid.Resources>

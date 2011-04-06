@@ -7,7 +7,7 @@ using System.Windows.Threading;
 
 #endregion
 
-namespace WPFCommons.SmartSearch
+namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   This class holds the logic that handle the execution of a delayed/differed action

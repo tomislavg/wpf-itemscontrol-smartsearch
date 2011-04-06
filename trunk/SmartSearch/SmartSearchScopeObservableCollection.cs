@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 
 #endregion
 
-namespace WPFCommons.SmartSearch
+namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
     ///   Derived class used to be able to manage filter application when a collection item property changed

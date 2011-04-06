@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFCommons", "WPFCommons.csproj", "{3F02155B-F171-4BB1-A1D7-8407F15609F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetexplorer.blog.com.WPFIcRtSandFc", "dotnetexplorer.blog.com.WPFIcRtSandFc.csproj", "{3F02155B-F171-4BB1-A1D7-8407F15609F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
