@@ -10,7 +10,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Xceed.Wpf.DataGrid;
 
 #endregion
 
@@ -379,9 +378,7 @@ namespace WPFCommons.SmartSearch
         {
             //substitute Original source with filtered source in the items control like Indiana Jones in "The Adventurers of The Lost Arch"
             DataControl.ItemsSource =
-                new DataGridCollectionView(
-                    substituteSource,
-                    UnderlyingType);
+                new CollectionView(substituteSource);
             //With xceed datagrids we need to use DataGridCollectionView to avoid conflicts when using DeferRefresh
             //Get the collection view source on which the filter will be done
             cvs = CollectionViewSource.GetDefaultView(DataControl.ItemsSource);
