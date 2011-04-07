@@ -14,12 +14,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WPFCommons")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("WPFIcRtSandFc")]
+[assembly: AssemblyDescription("WPF Smart Search Filter for ItemsControl")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SOCIETE GENERALE")]
-[assembly: AssemblyProduct("WPFCommons")]
-[assembly: AssemblyCopyright("Copyright © SOCIETE GENERALE 2011")]
+[assembly: AssemblyCompany("http://dotnetexplorer.blog.com")]
+[assembly: AssemblyProduct("WPFIcRtSandFc")]
+[assembly: AssemblyCopyright("Copyright © Bruno Chappe 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
