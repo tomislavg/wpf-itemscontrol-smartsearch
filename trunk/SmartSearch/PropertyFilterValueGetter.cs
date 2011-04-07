@@ -22,6 +22,8 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         private readonly Func<object, object> _propertyValueGetter;
 
+        private readonly bool isValType = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyFilterValueGetter"/> class.
         /// </summary>
@@ -35,6 +37,18 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         {
             PropertyFilterDescriptor = propertyFilter;
             _propertyValueGetter = CompileValueGetter(propertyFilter.FieldName, type);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyFilterValueGetter"/> class for value type or string candidates
+        /// </summary>
+        /// <param name="propertyFilter">
+        /// The property filter.
+        /// </param>
+        public PropertyFilterValueGetter(PropertyFilter propertyFilter)
+        {
+            PropertyFilterDescriptor = propertyFilter;
+            isValType = true;
         }
 
         /// <summary>
@@ -53,7 +67,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </returns>
         public string GetValue(object candidate)
         {
-            object oValue = _propertyValueGetter(candidate);
+            object oValue;
+            if (isValType)
+                oValue = candidate;
+            else
+                oValue = _propertyValueGetter(candidate);
 
             if (oValue != null)
             {
@@ -78,21 +96,21 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </returns>
         private static Func<object, object> CompileValueGetter(string propertyName, Type type)
         {
-            ParameterExpression param = Expression.Parameter(typeof (object), "Candidate");
+            ParameterExpression param = Expression.Parameter(typeof(object), "Candidate");
             LambdaExpression func = Expression.Lambda(
                 Expression.Convert(
                     Expression.PropertyOrField(
                         Expression.Convert(
-                            param, 
+                            param,
                             type
-                            ), 
+                            ),
                         propertyName
-                        ), 
-                    typeof (object)
-                    ), 
+                        ),
+                    typeof(object)
+                    ),
                 param
                 );
-            return (Func<object, object>) func.Compile();
+            return (Func<object, object>)func.Compile();
         }
     }
 }
