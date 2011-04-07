@@ -179,26 +179,45 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         private void SetFilterColumns()
         {
             var propertyFilters = Items.Cast<PropertyFilter>().ToList();
-            foreach (PropertyFilter pf in propertyFilters)
+
+            if (UnderlyingType.Equals(typeof(string)) || UnderlyingType.IsValueType)
             {
-                // Get the PropertyInfo
-                PropertyInfo pi = UnderlyingType.GetProperty(pf.FieldName);
-
-
-                // this info is mandatory
-                if (pi == null)
+                if (propertyFilters.Count > 1)
                 {
-                    throw new InvalidOperationException(string.Format("Cant't fin the property {0} for type {1}",
-                                                                      pf.FieldName, UnderlyingType.Name));
+                    throw new InvalidOperationException("Only one property filter is authorized when undelying type is String or a value type.");
+                }
+                if (propertyFilters.Count == 0)
+                {
+                    _valueGetters.Add(new PropertyFilterValueGetter(new PropertyFilter()));
+                }
+                else
+                {
+                    _valueGetters.Add(new PropertyFilterValueGetter(propertyFilters[0]));
                 }
 
-                // If pi is ok, build the value getter and add it to the list
-                var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType);
-                _valueGetters.Add(pfvg);
             }
+            else
+            {
+                foreach (PropertyFilter pf in propertyFilters)
+                {
+                    // Get the PropertyInfo
+                    PropertyInfo pi = UnderlyingType.GetProperty(pf.FieldName);
 
-            // If there is no PropertyFilter which is set to be monitored for property changes, we keep track of it to avoid to subscribe to propertychanged event later on
-            _hasAnyPropertyChangesToMonitor = propertyFilters.Any(p => p.MonitorPropertyChanged);
+                    // this info is mandatory
+                    if (pi == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Cant't find the property {0} for type {1}",
+                                                                          pf.FieldName, UnderlyingType.Name));
+                    }
+
+                    // If pi is ok, build the value getter and add it to the list
+                    var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType);
+                    _valueGetters.Add(pfvg);
+                }
+
+                // If there is no PropertyFilter which is set to be monitored for property changes, we keep track of it to avoid to subscribe to propertychanged event later on
+                _hasAnyPropertyChangesToMonitor = propertyFilters.Any(p => p.MonitorPropertyChanged);
+            }
         }
 
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
 {
@@ -77,6 +79,40 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
                                    Markets = "AUTHOBAN"
                                },
                        };
+        }
+
+        public List<string> GetStringSourceScopeOne()
+        {
+            var strLst = new List<string>();
+            Random rnd = new Random();
+
+            for (int i = 0; i < 100; i++)
+            {
+                
+                char[] chrs = new char[10];
+                for (int j = 0; j < 10; j++)
+                {
+                    chrs[j] = Convert.ToChar(rnd.Next(97, 122));
+                }
+                string str = new string(chrs);
+                strLst.Add(str);
+            }
+
+            return strLst;
+        }
+
+        public List<int> GetIntSourceScopeOne()
+        {
+            var intLst = new List<int>();
+            Random rnd = new Random();
+
+            for (int i = 0; i < 50; i++)
+            {
+                intLst.Add(i);
+
+            }
+
+            return intLst;
         }
 
         StrategyStatus GetStrategyStatusByRandomNumber(int rnd)
