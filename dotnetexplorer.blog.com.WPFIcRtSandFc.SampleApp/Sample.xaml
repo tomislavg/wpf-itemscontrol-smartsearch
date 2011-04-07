@@ -1,0 +1,59 @@
+﻿<Window x:Class="dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit" xmlns:SampleApp="clr-namespace:dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp" xmlns:SmartSearch="clr-namespace:dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch;assembly=dotnetexplorer.blog.com.WPFIcRtSandFc" Title="Window1" Height="600" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <SmartSearch:SmartSearchRoot x:Name="ss1"                                       
+                                       Margin=" 2,0,1,0" Grid.ColumnSpan="2">
+            <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=executionStrategyBlotter}"   
+                                              UnderlyingType="{x:Type SampleApp:StrategyAdapter}">
+                <SmartSearch:PropertyFilter FieldName="SendTime" />
+                <SmartSearch:PropertyFilter FieldName="StratStat" />
+                <SmartSearch:PropertyFilter FieldName="StratType" />
+                <SmartSearch:PropertyFilter FieldName="Dir" />
+                <SmartSearch:PropertyFilter FieldName="Message" />
+                <SmartSearch:PropertyFilter FieldName="Product" />
+                <SmartSearch:PropertyFilter FieldName="Amount" />
+                <SmartSearch:PropertyFilter FieldName="RequestedAmount" />
+                <SmartSearch:PropertyFilter FieldName="Price" />
+                <SmartSearch:PropertyFilter FieldName="RequestedPrice" />
+                <SmartSearch:PropertyFilter FieldName="Markets" />
+            </SmartSearch:SmartSearchScope>
+            <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=executionStrategyList}"   
+                                              UnderlyingType="{x:Type SampleApp:StrategyAdapter}">
+                <SmartSearch:PropertyFilter FieldName="SendTime" />
+                <SmartSearch:PropertyFilter FieldName="StratStat" />
+                <SmartSearch:PropertyFilter FieldName="Markets" />
+            </SmartSearch:SmartSearchScope>
+            <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=marketsBlotter}"   
+                                              UnderlyingType="{x:Type SampleApp:MarketAdapter}">
+                <SmartSearch:PropertyFilter FieldName="Name" />
+                <SmartSearch:PropertyFilter FieldName="Liquidity" />
+                <SmartSearch:PropertyFilter FieldName="Type" />
+            </SmartSearch:SmartSearchScope>
+        </SmartSearch:SmartSearchRoot>
+        <Controls:DataGrid x:Name="executionStrategyBlotter" AutoGenerateColumns="True" Grid.Row="1" ItemsSource="{Binding DataSourceStrategies}" Grid.ColumnSpan="2">
+        </Controls:DataGrid>
+        <ListBox x:Name="executionStrategyList" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding DataSourceStrategies}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SendTime}" Margin="2"></TextBlock>
+                        <TextBlock Text="{Binding Markets}" Margin="2"></TextBlock>
+                        <TextBlock Text="{Binding StratStat}" Margin="2"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Controls:DataGrid x:Name="marketsBlotter" AutoGenerateColumns="True" Grid.Row="2"  Grid.Column="1" ItemsSource="{Binding DataSourceMarkets}" />
+    </Grid>
+</Window>
