@@ -3,10 +3,10 @@
 
 FEATRUES
 
-* Static search filter on any Items control hosting any type collection of any underlying objects
+* Static search filter on any Items control hosting any type collection of any underlying objects (reference or value primitive types)
 * Full XAML declaration
 * Support OR / AND filter mode
 * Support "!" ("does not contains") operand
-* Real time filter when items are added or removed from the colection
-* Selective, On demand Real time filter when items gets there properties updated (items must of course implement INotifyPropertychanged)
-* Multi scope filter : One smart search control can filter many sources of the same underlying  object type or many sources of different underlying object types
+* Real time filter when items are added or removed from the colection (if collection implement INotifyCollectionChanged)
+* Selective, On demand Real time filter when items gets their properties updated (items must of course implement INotifyPropertychanged)
+* Multi scope filter : One smart search control can filter many sources of the same underlying object type or many sources of different underlying object types
