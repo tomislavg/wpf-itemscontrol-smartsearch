@@ -396,7 +396,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 _sb.AppendFormat(PropertyValueMaskCache, pfvg.GetValue(candidate));
             }
 
-            return _sb.ToString().ToLowerInvariant().Replace(EmptyPropertyValueMaskCache, string.Empty);
+            return _sb.ToString().ToLowerInvariant()/*.Replace(EmptyPropertyValueMaskCache, string.Empty)*/;
         }
 
         /// <summary>
@@ -432,8 +432,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         private void SetDataControlsource()
         {
             // substitute Original source with filtered source in the items control like Indiana Jones in "The Adventurers of The Lost Arch"
-            DataControl.ItemsSource =
-                new CollectionView(_substituteSource);
+            DataControl.ItemsSource = _substituteSource;
 
 
             // With xceed datagrids we need to use DataGridCollectionView to avoid conflicts when using DeferRefresh

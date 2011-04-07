@@ -17,11 +17,12 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class Sample : Window
     {
-        public Window1()
+        public Sample()
         {
             InitializeComponent();
+            DataContext = new SampleViewModel();
         }
     }
 }
