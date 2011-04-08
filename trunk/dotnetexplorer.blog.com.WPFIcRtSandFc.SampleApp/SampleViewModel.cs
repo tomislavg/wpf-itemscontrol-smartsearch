@@ -6,7 +6,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
    
     class SampleViewModel
     {
-        ItemsPooler itemsPooler;
+        readonly ItemsPooler itemsPooler;
 
         public SampleViewModel()
         {
@@ -20,10 +20,12 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         //2 types of collections to demonstrate that static filter works on both types of collections
         //However, the first one won't notify smart search when receiving or removing items
         public List<StrategyAdapter> DataSourceStrategies { get; set; }
+
         public ObservableCollection<MarketAdapter> DataSourceMarkets { get; set; }
 
 
         public IEnumerable<string> DataSourceString { get; set; }
+
         public IEnumerable<int> DataSourceInt { get; set; }
 
     }
