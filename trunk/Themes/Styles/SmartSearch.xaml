@@ -74,7 +74,7 @@
 							<TextBlock Grid.Column="2" x:Name="PART_TxtNbResults" Text="{TemplateBinding Results}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0,2,0" Foreground="{TemplateBinding Foreground}" />
 						</Grid>
 
-						<ToggleButton x:Name="PART_ToggleCpntVisibilityBtn" Height="18" Width="18" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+						<ToggleButton x:Name="PART_ToggleCpntVisibilityBtn" IsChecked="true" Height="18" Width="18" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
 							<Rectangle Fill="{StaticResource imgSearch}" Width="14" Height="14" />
 						</ToggleButton>
 					</Grid>
