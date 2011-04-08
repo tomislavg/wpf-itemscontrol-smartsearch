@@ -105,8 +105,8 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         static SmartSearchRoot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (SmartSearchRoot), 
-                                                     new FrameworkPropertyMetadata(typeof (SmartSearchRoot)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SmartSearchRoot),
+                                                     new FrameworkPropertyMetadata(typeof(SmartSearchRoot)));
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             if (PART_BtnSwitchAndOr != null)
             {
                 PART_BtnSwitchAndOr.Click += PartBtnSwitchAndOrSwitch;
-                var tb = new TextBlock {FontSize = 8, Text = filterMode.ToString()};
+                var tb = new TextBlock { FontSize = 8, Text = filterMode.ToString() };
                 PART_BtnSwitchAndOr.Content = tb;
             }
 
@@ -155,7 +155,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             // Subscribe to each scope results notifications
             foreach (object item in Items)
             {
-                var ssc = (SmartSearchScope) item;
+                var ssc = (SmartSearchScope)item;
 
                 ssc.IncreaseResultsEvent += SscIncreaseResultsEvent;
             }
@@ -176,7 +176,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         private void PartBtnSwitchAndOrSwitch(object sender, RoutedEventArgs e)
         {
             filterMode = filterMode == FilterMode.AND ? FilterMode.OR : FilterMode.AND;
-            var tb = new TextBlock {FontSize = 8, Text = filterMode.ToString()};
+            var tb = new TextBlock { FontSize = 8, Text = filterMode.ToString() };
             PART_BtnSwitchAndOr.Content = tb;
             filterModeHasChanged = true;
             ApplySearchCriteria();
@@ -202,7 +202,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 {
                     tgb.Margin = runtimeComponentVisibleMargin;
                 }
-                    
+
 
 // if not
                 else
@@ -289,7 +289,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             ExecuteFilter(); // When text search is set in the textbox, execute the filter action
 
 
-// ApplySearchCriteria();
+            // ApplySearchCriteria();
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         private void ApplySearchCriteria()
         {
-            searchTerms = searchInput.Split(new[] {Separator}).ToList();
+            searchTerms = searchInput.Split(new[] { Separator }).ToList();
 
             // Manage if there is really a need to update filter (this excludes empty search string for example)
             bool filter = false;
@@ -339,7 +339,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             }
 
 
-// If really need to updaet filter
+            // If really need to updaet filter
             if (filter)
             {
                 // Trim end and start spaces
@@ -365,14 +365,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         ///   The results property.
         /// </summary>
         public static readonly DependencyProperty ResultsProperty =
-            DependencyProperty.Register("Results", typeof (string), typeof (SmartSearchRoot), 
+            DependencyProperty.Register("Results", typeof(string), typeof(SmartSearchRoot),
                                         new UIPropertyMetadata(string.Empty));
 
         /// <summary>
         ///   The show hide button location property.
         /// </summary>
         public static readonly DependencyProperty ShowHideButtonLocationProperty =
-            DependencyProperty.Register("ShowHideButtonLocation", typeof (object), typeof (SmartSearchRoot), 
+            DependencyProperty.Register("ShowHideButtonLocation", typeof(object), typeof(SmartSearchRoot),
                                         new UIPropertyMetadata("None", PinLocationChanged));
 
 
@@ -381,7 +381,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         public string Results
         {
-            get { return (string) GetValue(ResultsProperty); }
+            get { return (string)GetValue(ResultsProperty); }
             private set { SetValue(ResultsProperty, value); }
         }
 
@@ -412,7 +412,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 {
                     var testenum =
                         (ShowHideButtonLocationValue)
-                        Enum.Parse(typeof (ShowHideButtonLocationValue), e.NewValue.ToString());
+                        Enum.Parse(typeof(ShowHideButtonLocationValue), e.NewValue.ToString());
 
                     ssc.SetPinLocation(testenum);
                 }
