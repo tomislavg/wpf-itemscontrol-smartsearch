@@ -14,6 +14,9 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <SmartSearch:SmartSearchRoot x:Name="ss1"                                       
@@ -33,7 +36,7 @@
                 <SmartSearch:PropertyFilter FieldName="RequestedPrice" />
                 <SmartSearch:PropertyFilter FieldName="Markets" />
             </SmartSearch:SmartSearchScope>
-            
+
             <!--Scope used to filter strategies adapters listbox -->
             <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=executionStrategyList}"   
                                               UnderlyingType="{x:Type SampleApp:StrategyAdapter}">
@@ -41,7 +44,7 @@
                 <SmartSearch:PropertyFilter FieldName="StratStat" />
                 <SmartSearch:PropertyFilter FieldName="Markets" />
             </SmartSearch:SmartSearchScope>
-            
+
             <!--Scope used to filter market adapters datagrid -->
             <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=marketsBlotter}"   
                                               UnderlyingType="{x:Type SampleApp:MarketAdapter}">
@@ -56,14 +59,14 @@
             <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=stringList}"   
                                               UnderlyingType="{x:Type System:String}">
                 <SmartSearch:PropertyFilter FieldName="" ValueConverter="{StaticResource strConv}" />
-               
+
             </SmartSearch:SmartSearchScope>
 
             <!--Scope used to filter native int combobox -->
             <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=intList}"   
                                               UnderlyingType="{x:Type System:Int32}"/>
         </SmartSearch:SmartSearchRoot>
-        
+
         <Controls:DataGrid x:Name="executionStrategyBlotter" AutoGenerateColumns="True" Grid.Row="1" ItemsSource="{Binding DataSourceStrategies}" Grid.ColumnSpan="2">
         </Controls:DataGrid>
         <ListBox x:Name="executionStrategyList" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding DataSourceStrategies}" >
@@ -79,7 +82,7 @@
         </ListBox>
         <Controls:DataGrid x:Name="marketsBlotter" AutoGenerateColumns="True" Grid.Row="2"  Grid.Column="1" ItemsSource="{Binding DataSourceMarkets}" />
 
-        <ListBox x:Name="stringList" Grid.Row="4" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" ItemsSource="{Binding DataSourceString}" >
+        <ListBox x:Name="stringList" MaxHeight="150" Grid.Row="4" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Column="0" ItemsSource="{Binding DataSourceString}" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -90,5 +93,18 @@
         </ListBox>
         <ComboBox x:Name="intList" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding DataSourceInt}" VerticalAlignment="Top">
         </ComboBox>
+
+        <SmartSearch:SmartSearchRoot x:Name="ss2"                                       
+                                       Margin=" 2,0,1,0" Grid.Row="5" Grid.ColumnSpan="2">
+            <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=strategyTreeView}"   
+                                              UnderlyingType="{x:Type SampleApp:StrategyAdapter}">
+                <SmartSearch:PropertyFilter FieldName="SendTime"  />
+
+            </SmartSearch:SmartSearchScope>
+        </SmartSearch:SmartSearchRoot>
+
+        <TreeView x:Name="strategyTreeView" Background="LightCoral" Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding DataSourceStrategies}" DisplayMemberPath="SendTime">
+
+        </TreeView>
     </Grid>
 </Window>
