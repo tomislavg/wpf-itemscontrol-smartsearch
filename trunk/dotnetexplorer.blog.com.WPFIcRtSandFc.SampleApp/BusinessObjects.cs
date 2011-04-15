@@ -57,6 +57,5 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         public string Name { get; set; }
         public double Liquidity { get; set; }
         public MarketType Type { get; set; }
-
     }
 }

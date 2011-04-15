@@ -74,7 +74,12 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="10,0,10,0">
             <TextBlock Margin="0,10,0,0"  Text="Big strategies datagrid" TextWrapping="Wrap"></TextBlock>
-            <Controls:DataGrid x:Name="executionStrategyBlotter" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="True"  ItemsSource="{Binding DataSourceStrategies}" Grid.ColumnSpan="2">
+            <Controls:DataGrid x:Name="executionStrategyBlotter" 
+                               CanUserAddRows="False" 
+                               CanUserDeleteRows="False" 
+                               AutoGenerateColumns="True"  
+                               ItemsSource="{Binding DataSourceStrategies}" 
+                               Grid.ColumnSpan="2">
             </Controls:DataGrid>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,0,10,0">
@@ -92,8 +97,18 @@
             </ListBox>
         </StackPanel>
         <StackPanel Grid.Row="2"  Grid.Column="1" Margin="10,0,10,0">
-            <TextBlock  Margin="0,10,0,0" Text="markets datagrid" TextWrapping="Wrap"></TextBlock>
-            <Controls:DataGrid x:Name="marketsBlotter" AutoGenerateColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding DataSourceMarkets}" />
+            <TextBlock  Margin="0,10,0,0" Text="markets listbox" TextWrapping="Wrap"></TextBlock>
+            <ListBox x:Name="marketsBlotter"  ItemsSource="{Binding DataSourceMarkets}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding Type, StringFormat=' ({0}) : '}"/>
+                            <TextBlock Text="{Binding Liquidity}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
 
         <StackPanel  Grid.Row="4" Grid.Column="0" Margin="10,0,10,0">
