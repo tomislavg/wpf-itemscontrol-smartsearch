@@ -23,7 +23,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
     using System.Windows.Data;
 
     /// <summary>
-    /// This class repersents a search scope defined by a ICollectionView and a FilterColumns property
+    ///   This class repersents a search scope defined by a ICollectionView and a FilterColumns property
     ///   The filter execution is delegated to this class by the main smart search control which unique purpose is now to
     ///   get the user input.
     /// </summary>
@@ -33,6 +33,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         ///   The property value mask cache.
         /// </summary>
         private const string PropertyValueMaskCache = "{0} ";
+
+        public static readonly DependencyProperty DefaultMonitorPropertyChangesProperty =
+            DependencyProperty.Register("DefaultMonitorPropertyChanges", typeof(bool), typeof(SmartSearchScope),
+                                        new UIPropertyMetadata(false));
 
         /// <summary>
         ///   The empty property value mask cache.
@@ -54,6 +58,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                                         new UIPropertyMetadata(null));
 
         /// <summary>
+        ///   Collection property value getters
+        /// </summary>
+        private readonly List<PropertyFilterValueGetter> _valueGetters = new List<PropertyFilterValueGetter>();
+
+        /// <summary>
         ///   Delegate for the value getter fonction
         /// </summary>
         private readonly Func<object, string> concatTestValue;
@@ -67,11 +76,6 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         ///   Synchronization object
         /// </summary>
         private readonly object sync = new object();
-
-        /// <summary>
-        ///   Collection property value getters
-        /// </summary>
-        private readonly List<PropertyFilterValueGetter> _valueGetters = new List<PropertyFilterValueGetter>();
 
         /// <summary>
         ///   Scope results
@@ -138,6 +142,16 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
+        ///   Gets or Sets if the property changed is monitored by default.
+        ///   This property is not taken into account when explicitly defining PropertyFilters
+        /// </summary>
+        public bool DefaultMonitorPropertyChanges
+        {
+            get { return (bool)GetValue(DefaultMonitorPropertyChangesProperty); }
+            set { SetValue(DefaultMonitorPropertyChangesProperty, value); }
+        }
+
+        /// <summary>
         ///   Gets or sets the datacontrol on which the smart search applies
         /// </summary>
         public ItemsControl DataControl
@@ -171,64 +185,88 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Method called when FilterColumns property changes
+        ///   Method called when FilterColumns property changes
         /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// Raised when a a property filter refers to a non existing candidate object type property
+        /// <exception cref = "InvalidOperationException">
+        ///   Raised when a a property filter refers to a non existing candidate object type property
         /// </exception>
         private void SetFilterColumns()
         {
-            var propertyFilters = Items.Cast<PropertyFilter>().ToList();
+            var propertyFilters = Items.Cast<ValueFilter>().ToList();
 
             if (UnderlyingType.Equals(typeof(string)) || UnderlyingType.IsValueType)
             {
+                //for native types, only one ValueFilter accepted to apply string format or IValueConverter 
                 if (propertyFilters.Count > 1)
                 {
-                    throw new InvalidOperationException("Only one property filter is authorized when undelying type is String or a value type.");
+                    throw new InvalidOperationException(
+                        "Only one property filter is authorized when underlying type is String or a value type.");
                 }
+                //Then if there is no property filter at all, there is no conversion needed and we build a defautl property getter
+                //and there is one, we build a property getter accordingly
+                _valueGetters.Add(propertyFilters.Count == 0
+                                      ? new PropertyFilterValueGetter(new ValueFilter())
+                                      : new PropertyFilterValueGetter(propertyFilters[0]));
+            }
+            //if the underlying type if neither a string nor value type, then it is a reference type
+            else
+            {
+                IEnumerable<PropertyFilter> apfs;
+                //if there is no PropertyFilter defined, we build it by default based on every instance public properties of the underlying type
                 if (propertyFilters.Count == 0)
                 {
-                    _valueGetters.Add(new PropertyFilterValueGetter(new PropertyFilter()));
+                    apfs = new List<PropertyFilter>();
+                    // Get the type Properties
+                    var pis = UnderlyingType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                    //iterate
+                    foreach (var propertyInfo in pis)
+                    {
+                        var pf = new PropertyFilter(propertyInfo.Name, DefaultMonitorPropertyChanges);
+                        var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType);//Generate...
+                        _valueGetters.Add(pfvg);//...and add value getter for each properties
+                    }
                 }
                 else
                 {
-                    _valueGetters.Add(new PropertyFilterValueGetter(propertyFilters[0]));
-                }
-
-            }
-            else
-            {
-                foreach (PropertyFilter pf in propertyFilters)
-                {
-                    // Get the PropertyInfo
-                    PropertyInfo pi = UnderlyingType.GetProperty(pf.FieldName);
-
-                    // this info is mandatory
-                    if (pi == null)
+                    //and thus every ValueFilter must be PropertyFilter
+                    if (propertyFilters.Any(p => !(p is PropertyFilter)))
                     {
-                        throw new InvalidOperationException(string.Format("Cant't find the property {0} for type {1}",
-                                                                          pf.FieldName, UnderlyingType.Name));
+                        throw new InvalidOperationException("ValueFilter can't be used with reference type.");
                     }
+                    apfs = propertyFilters.Cast<PropertyFilter>().ToList();
+                    foreach (PropertyFilter pf in apfs)
+                    {
+                        // Get the PropertyInfo
+                        PropertyInfo pi = UnderlyingType.GetProperty(pf.FieldName);
 
-                    // If pi is ok, build the value getter and add it to the list
-                    var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType);
-                    _valueGetters.Add(pfvg);
+                        // this info is mandatory
+                        if (pi == null)
+                        {
+                            throw new InvalidOperationException(
+                                string.Format("Cant't find the property {0} for type {1}",
+                                              pf.FieldName, UnderlyingType.Name));
+                        }
+
+                        // If pi is ok, build the value getter and add it to the list
+                        var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType);
+                        _valueGetters.Add(pfvg);
+                    }
                 }
 
-                // If there is no PropertyFilter which is set to be monitored for property changes, we keep track of it to avoid to subscribe to propertychanged event later on
-                _hasAnyPropertyChangesToMonitor = propertyFilters.Any(p => p.MonitorPropertyChanged);
+                // If there is no ValueFilter which is set to be monitored for property changes, we keep track of it to avoid to subscribe to propertychanged event later on
+                _hasAnyPropertyChangesToMonitor = apfs.Any(p => p.MonitorPropertyChanged);
             }
         }
 
 
         /// <summary>
-        /// Callback executed when DataControl property value changed
+        ///   Callback executed when DataControl property value changed
         /// </summary>
-        /// <param name="d">
-        /// Dependency object on which the data control has been set (here a SmartSearchScope object)
+        /// <param name = "d">
+        ///   Dependency object on which the data control has been set (here a SmartSearchScope object)
         /// </param>
-        /// <param name="e">
-        /// Argument containing the new binding value
+        /// <param name = "e">
+        ///   Argument containing the new binding value
         /// </param>
         private static void OnDataControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -240,21 +278,21 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Subscribe to Datacontrol ItemsSource changes
+        ///   Subscribe to Datacontrol ItemsSource changes
         /// </summary>
         private void Subscribe()
         {
             _sourcePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty,
-                                                                                 typeof(ItemsControl));
+                                                                                  typeof(ItemsControl));
             _sourcePropertyDescriptor.AddValueChanged(DataControl, SourceChanged);
         }
 
         /// <summary>
-        /// When detecting a source change, initialize the cache
+        ///   When detecting a source change, initialize the cache
         /// </summary>
-        /// <param name="sender">
+        /// <param name = "sender">
         /// </param>
-        /// <param name="e">
+        /// <param name = "e">
         /// </param>
         private void SourceChanged(object sender, EventArgs e)
         {
@@ -268,10 +306,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         public event EventHandler IncreaseResultsEvent;
 
         /// <summary>
-        /// The invoke increase results event.
+        ///   The invoke increase results event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
+        /// <param name = "e">
+        ///   The e.
         /// </param>
         private void InvokeIncreaseResultsEvent(EventArgs e)
         {
@@ -280,7 +318,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Call the notify results event invoker
+        ///   Call the notify results event invoker
         /// </summary>
         private void NotifyResults()
         {
@@ -288,12 +326,12 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Method called from the SmartSearch component
+        ///   Method called from the SmartSearch component
         /// </summary>
-        /// <param name="terms">
-        /// List of search terms passed to search scope
+        /// <param name = "terms">
+        ///   List of search terms passed to search scope
         /// </param>
-        /// <param name="filtertypeMode">
+        /// <param name = "filtertypeMode">
         /// </param>
         public void ApplySearchCriteria(IEnumerable<string> terms, FilterMode filtertypeMode)
         {
@@ -316,7 +354,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Main method for applying filter
+        ///   Main method for applying filter
         /// </summary>
         private void ApplySearchCriteria()
         {
@@ -336,14 +374,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Main method which will evaluate if an object si a valid candidate to be included in the view
+        ///   Main method which will evaluate if an object si a valid candidate to be included in the view
         ///   depending on the user filter input
         /// </summary>
-        /// <param name="candidate">
-        /// Candiate object
+        /// <param name = "candidate">
+        ///   Candiate object
         /// </param>
         /// <returns>
-        /// Object is/is not candidate for the inclusion in the view
+        ///   Object is/is not candidate for the inclusion in the view
         /// </returns>
         private bool FilterSearch(object candidate)
         {
@@ -399,13 +437,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Get string concatenated formated value for a candidate
+        ///   Get string concatenated formated value for a candidate
         /// </summary>
-        /// <param name="candidate">
-        /// Candidate for which to retreive values
+        /// <param name = "candidate">
+        ///   Candidate for which to retreive values
         /// </param>
         /// <returns>
-        /// Formatted values (serparated given the mask previously declared)
+        ///   Formatted values (serparated given the mask previously declared)
         /// </returns>
         private string GetConcatenatedCandidateValue(object candidate)
         {
@@ -415,11 +453,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 _sb.AppendFormat(PropertyValueMaskCache, pfvg.GetValue(candidate));
             }
 
-            return _sb.ToString().ToLowerInvariant()/*.Replace(EmptyPropertyValueMaskCache, string.Empty)*/;
+            return _sb.ToString().ToLowerInvariant() /*.Replace(EmptyPropertyValueMaskCache, string.Empty)*/;
         }
 
         /// <summary>
-        /// Initialize the candidate cache
+        ///   Initialize the candidate cache
         /// </summary>
         private void InitializeFilterScope()
         {
@@ -446,7 +484,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        /// Set custom datasource to the datacontrol
+        ///   Set custom datasource to the datacontrol
         /// </summary>
         private void SetDataControlsource()
         {
@@ -460,14 +498,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Callback executed when the original source notify add/remove of items
+        ///   Callback executed when the original source notify add/remove of items
         ///   Used to synchronize original source with copy of the original source
         /// </summary>
-        /// <param name="sender">
-        /// Original source collection
+        /// <param name = "sender">
+        ///   Original source collection
         /// </param>
-        /// <param name="e">
-        /// Added/removed items
+        /// <param name = "e">
+        ///   Added/removed items
         /// </param>
         private void OriginalSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -489,10 +527,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Manage actions when an item is removed from the original collection
+        ///   Manage actions when an item is removed from the original collection
         /// </summary>
-        /// <param name="o">
-        /// Removed item
+        /// <param name = "o">
+        ///   Removed item
         /// </param>
         private void ManageItemRemove(object o)
         {
@@ -510,10 +548,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Manage actions when an item is added to the original collection
+        ///   Manage actions when an item is added to the original collection
         /// </summary>
-        /// <param name="o">
-        /// Added item
+        /// <param name = "o">
+        ///   Added item
         /// </param>
         private void ManageItemAdd(object o)
         {
@@ -534,24 +572,24 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// Callback executed when an item's property gets updated
+        ///   Callback executed when an item's property gets updated
         /// </summary>
-        /// <param name="sender">
-        /// Items
+        /// <param name = "sender">
+        ///   Items
         /// </param>
-        /// <param name="e">
-        /// Argument containing the name of the property that raised the changes
+        /// <param name = "e">
+        ///   Argument containing the name of the property that raised the changes
         /// </param>
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // lots of properties gets updated, we watch only those which belongs to visible fieldnames
             // and those who were registered for propertychanges monitoring
             // and of course if the item is still on the list
-            if (_valueGetters.Any(vg => vg.PropertyFilterDescriptor.FieldName == e.PropertyName))
+            if (_valueGetters.Any(vg => vg.FieldName == e.PropertyName))
             {
                 PropertyFilterValueGetter pf =
-                    _valueGetters.FirstOrDefault(vg => vg.PropertyFilterDescriptor.FieldName == e.PropertyName);
-                if (pf.PropertyFilterDescriptor.MonitorPropertyChanged && _substituteSource.Contains(sender))
+                    _valueGetters.FirstOrDefault(vg => vg.FieldName == e.PropertyName);
+                if (pf.MonitorPropertyChanged && _substituteSource.Contains(sender))
                 {
                     // To avoid doing a refresh on a property change which would end in a very hawful user experience
                     // we simulate a replace to the collection because the filter is automatically applied in this case

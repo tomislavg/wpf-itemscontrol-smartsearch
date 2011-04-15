@@ -29,7 +29,7 @@
                 <!--Scope used to filter strategies adapters datagrid -->
                 <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=executionStrategyBlotter}"   
                                               UnderlyingType="{x:Type SampleApp:StrategyAdapter}">
-                    <SmartSearch:PropertyFilter FieldName="SendTime" />
+                    <!--<SmartSearch:PropertyFilter FieldName="SendTime" />
                     <SmartSearch:PropertyFilter FieldName="StratStat" />
                     <SmartSearch:PropertyFilter FieldName="StratType" />
                     <SmartSearch:PropertyFilter FieldName="Dir" />
@@ -39,7 +39,7 @@
                     <SmartSearch:PropertyFilter FieldName="RequestedAmount" />
                     <SmartSearch:PropertyFilter FieldName="Price" />
                     <SmartSearch:PropertyFilter FieldName="RequestedPrice" />
-                    <SmartSearch:PropertyFilter FieldName="Markets" />
+                    <SmartSearch:PropertyFilter FieldName="Markets" />-->
                 </SmartSearch:SmartSearchScope>
 
                 <!--Scope used to filter strategies adapters listbox -->
@@ -59,11 +59,11 @@
                 </SmartSearch:SmartSearchScope>
 
                 <!--Scope used to filter native string listbox -->
-                <!--Scope primitive types accepts only one or zero PropertyFilter -->
+                <!--Scope primitive types accepts only one or zero AdvancedPropertyFilter -->
                 <!--If you dont need to apply a string format or a converter, you don't need one -->
                 <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=stringList}"   
                                               UnderlyingType="{x:Type System:String}">
-                    <SmartSearch:PropertyFilter FieldName="" ValueConverter="{StaticResource strConv}" />
+                    <SmartSearch:ValueFilter  ValueConverter="{StaticResource strConv}" />
 
                 </SmartSearch:SmartSearchScope>
 
