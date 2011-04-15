@@ -84,17 +84,17 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         public List<string> GetStringSourceScopeOne()
         {
             var strLst = new List<string>();
-            Random rnd = new Random();
+            var rnd = new Random();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 
-                char[] chrs = new char[10];
+                var chrs = new char[10];
                 for (int j = 0; j < 10; j++)
                 {
                     chrs[j] = Convert.ToChar(rnd.Next(97, 122));
                 }
-                string str = new string(chrs);
+                var str = new string(chrs);
                 strLst.Add(str);
             }
 
@@ -104,9 +104,9 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         public List<int> GetIntSourceScopeOne()
         {
             var intLst = new List<int>();
-            Random rnd = new Random();
+            var rnd = new Random();
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 3000; i++)
             {
                 intLst.Add(i);
 

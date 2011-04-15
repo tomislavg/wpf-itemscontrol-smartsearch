@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows.Media;
+
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     using System;
@@ -116,7 +118,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         {
             if (PART_BtnSwitchAndOr != null)
             {
-                PART_BtnSwitchAndOr.Click -= PartBtnSwitchAndOrSwitch;
+                PART_BtnSwitchAndOr.Click -= PartBtnSwitchAndOr;
             }
 
             if (PART_TxtInputs != null)
@@ -137,7 +139,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             PART_BtnSwitchAndOr = GetTemplateChild("PART_BtnSwitchAndOr") as Button;
             if (PART_BtnSwitchAndOr != null)
             {
-                PART_BtnSwitchAndOr.Click += PartBtnSwitchAndOrSwitch;
+                PART_BtnSwitchAndOr.Click += PartBtnSwitchAndOr;
                 var tb = new TextBlock { FontSize = 8, Text = filterMode.ToString() };
                 PART_BtnSwitchAndOr.Content = tb;
             }
@@ -165,7 +167,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        /// The part btn switch and or switch.
+        /// The part btn and or switch.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -173,7 +175,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// <param name="e">
         /// The e.
         /// </param>
-        private void PartBtnSwitchAndOrSwitch(object sender, RoutedEventArgs e)
+        private void PartBtnSwitchAndOr(object sender, RoutedEventArgs e)
         {
             filterMode = filterMode == FilterMode.AND ? FilterMode.OR : FilterMode.AND;
             var tb = new TextBlock { FontSize = 8, Text = filterMode.ToString() };
@@ -204,7 +206,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 }
 
 
-// if not
+                // if not
                 else
                 {
                     // set initialization margins
@@ -273,6 +275,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             if (control != null)
             {
                 FilterTextChanged(control.Text);
+
             }
         }
 
