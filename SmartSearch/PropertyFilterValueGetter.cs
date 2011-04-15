@@ -13,7 +13,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Wrapper that encapsulate filter property informations as well as precompiled value getter
+    ///   Wrapper that encapsulate filter property informations as well as precompiled value getter
     /// </summary>
     internal sealed class PropertyFilterValueGetter
     {
@@ -22,60 +22,72 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         private readonly Func<object, object> _propertyValueGetter;
 
-        private readonly bool isValType = false;
+        private readonly string fieldName = string.Empty;
+
+        private readonly bool isNativeType;
+        private readonly bool monitorPropertyChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyFilterValueGetter"/> class.
+        ///   Initializes a new instance of the <see cref = "PropertyFilterValueGetter" /> class.
         /// </summary>
-        /// <param name="propertyFilter">
-        /// Associated property Filter descriptor
+        /// <param name = "valueFilter">
+        ///   Associated property Filter descriptor
         /// </param>
-        /// <param name="type">
-        /// Underlying type
+        /// <param name = "type">
+        ///   Underlying type
         /// </param>
-        public PropertyFilterValueGetter(PropertyFilter propertyFilter, Type type)
+        public PropertyFilterValueGetter(PropertyFilter valueFilter, Type type)
         {
-            PropertyFilterDescriptor = propertyFilter;
-            _propertyValueGetter = CompileValueGetter(propertyFilter.FieldName, type);
+            ValueFilterDescriptor = valueFilter;
+            fieldName = valueFilter.FieldName;
+            monitorPropertyChanged = valueFilter.MonitorPropertyChanged;
+            _propertyValueGetter = CompileValueGetter(valueFilter.FieldName, type);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyFilterValueGetter"/> class for value type or string candidates
+        ///   Initializes a new instance of the <see cref = "PropertyFilterValueGetter" /> class for value type or string candidates
         /// </summary>
-        /// <param name="propertyFilter">
-        /// The property filter.
+        /// <param name = "valueFilter">
+        ///   The property filter.
         /// </param>
-        public PropertyFilterValueGetter(PropertyFilter propertyFilter)
+        public PropertyFilterValueGetter(ValueFilter valueFilter)
         {
-            PropertyFilterDescriptor = propertyFilter;
-            isValType = true;
+            ValueFilterDescriptor = valueFilter;
+            isNativeType = true;
         }
 
         /// <summary>
         ///   Property filter descriptor
         /// </summary>
-        public PropertyFilter PropertyFilterDescriptor { get; private set; }
+        private ValueFilter ValueFilterDescriptor { get; set; }
+
+        public bool MonitorPropertyChanged
+        {
+            get { return monitorPropertyChanged; }
+        }
+
+        public string FieldName
+        {
+            get { return fieldName; }
+        }
+
 
         /// <summary>
-        /// Return the string value to test against
+        ///   Return the string value to test against
         /// </summary>
-        /// <param name="candidate">
-        /// Candidate for which retreive value
+        /// <param name = "candidate">
+        ///   Candidate for which retreive value
         /// </param>
         /// <returns>
-        /// Candidate formated values
+        ///   Candidate formated values
         /// </returns>
         public string GetValue(object candidate)
         {
-            object oValue;
-            if (isValType)
-                oValue = candidate;
-            else
-                oValue = _propertyValueGetter(candidate);
+            object oValue = isNativeType ? candidate : _propertyValueGetter(candidate);
 
             if (oValue != null)
             {
-                return PropertyFilterDescriptor.Convert(oValue);
+                return ValueFilterDescriptor.Convert(oValue);
             }
 
             return string.Empty;
@@ -83,20 +95,20 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        /// Return a precompiled propertyValue getter
+        ///   Return a precompiled propertyValue getter
         /// </summary>
-        /// <param name="propertyName">
-        /// Property name for which to generate the delegate
+        /// <param name = "propertyName">
+        ///   Property name for which to generate the delegate
         /// </param>
-        /// <param name="type">
-        /// Container type
+        /// <param name = "type">
+        ///   Container type
         /// </param>
         /// <returns>
-        /// Compiled delegate
+        ///   Compiled delegate
         /// </returns>
         private static Func<object, object> CompileValueGetter(string propertyName, Type type)
         {
-            ParameterExpression param = Expression.Parameter(typeof(object), "Candidate");
+            ParameterExpression param = Expression.Parameter(typeof (object), "Candidate");
             LambdaExpression func = Expression.Lambda(
                 Expression.Convert(
                     Expression.PropertyOrField(
@@ -106,11 +118,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                             ),
                         propertyName
                         ),
-                    typeof(object)
+                    typeof (object)
                     ),
                 param
                 );
-            return (Func<object, object>)func.Compile();
+            return (Func<object, object>) func.Compile();
         }
     }
 }

@@ -58,8 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmartSearch\DelayedAction.cs" />
     <Compile Include="SmartSearch\FilterMode.cs" />
-    <Compile Include="SmartSearch\ShowHideButtonLocationValue.cs" />
     <Compile Include="SmartSearch\PropertyFilter.cs" />
+    <Compile Include="SmartSearch\ShowHideButtonLocationValue.cs" />
+    <Compile Include="SmartSearch\ValueFilter.cs" />
     <Compile Include="SmartSearch\PropertyFilterValueGetter.cs" />
     <Compile Include="SmartSearch\SmartSearchRoot.cs" />
     <Compile Include="SmartSearch\SmartSearchScope.cs" />
@@ -87,5 +88,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
