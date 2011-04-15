@@ -29,17 +29,6 @@
                 <!--Scope used to filter strategies adapters datagrid -->
                 <SmartSearch:SmartSearchScope DataControl="{Binding ElementName=executionStrategyBlotter}"   
                                               UnderlyingType="{x:Type SampleApp:StrategyAdapter}">
-                    <!--<SmartSearch:PropertyFilter FieldName="SendTime" />
-                    <SmartSearch:PropertyFilter FieldName="StratStat" />
-                    <SmartSearch:PropertyFilter FieldName="StratType" />
-                    <SmartSearch:PropertyFilter FieldName="Dir" />
-                    <SmartSearch:PropertyFilter FieldName="Message" />
-                    <SmartSearch:PropertyFilter FieldName="Product" />
-                    <SmartSearch:PropertyFilter FieldName="Amount" />
-                    <SmartSearch:PropertyFilter FieldName="RequestedAmount" />
-                    <SmartSearch:PropertyFilter FieldName="Price" />
-                    <SmartSearch:PropertyFilter FieldName="RequestedPrice" />
-                    <SmartSearch:PropertyFilter FieldName="Markets" />-->
                 </SmartSearch:SmartSearchScope>
 
                 <!--Scope used to filter strategies adapters listbox -->

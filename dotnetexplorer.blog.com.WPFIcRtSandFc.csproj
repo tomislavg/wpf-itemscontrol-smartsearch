@@ -12,6 +12,8 @@
     <AssemblyName>dotnetexplorer.blog.com.WPFIcRtSandFc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>dotnetexplorer.SmartSearch.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,6 +81,9 @@
   <ItemGroup>
     <Resource Include="Themes\Resources\search_32.png" />
     <Resource Include="Themes\Resources\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dotnetexplorer.SmartSearch.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
