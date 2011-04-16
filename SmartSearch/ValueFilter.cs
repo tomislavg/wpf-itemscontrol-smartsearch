@@ -1,13 +1,15 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// http://dotnetexplorer.blog.com
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Windows;
+using System.Windows.Data;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Data;
-
     /// <summary>
-    ///   Define an object property on wich filter should be applied
+    /// Define an object property on wich filter should be applied
     /// </summary>
     public class ValueFilter : FrameworkElement
     {
@@ -15,14 +17,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         ///   The text format property.
         /// </summary>
         public static readonly DependencyProperty TextFormatProperty =
-            DependencyProperty.Register("TextFormat", typeof (string), typeof (ValueFilter),
+            DependencyProperty.Register("TextFormat", typeof (string), typeof (ValueFilter), 
                                         new UIPropertyMetadata(string.Empty, OnTextFormatChanged));
 
         /// <summary>
         ///   The value converter property.
         /// </summary>
         public static readonly DependencyProperty ValueConverterProperty =
-            DependencyProperty.Register("ValueConverter", typeof (IValueConverter), typeof (ValueFilter),
+            DependencyProperty.Register("ValueConverter", typeof (IValueConverter), typeof (ValueFilter), 
                                         new UIPropertyMetadata(null, OnValueConverterChanged));
 
         /// <summary>
@@ -78,13 +80,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   The on text format changed.
+        /// The on text format changed.
         /// </summary>
-        /// <param name = "d">
-        ///   The d.
+        /// <param name="d">
+        /// The d.
         /// </param>
-        /// <param name = "e">
-        ///   The e.
+        /// <param name="e">
+        /// The e.
         /// </param>
         private static void OnTextFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -92,13 +94,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   The on value converter changed.
+        /// The on value converter changed.
         /// </summary>
-        /// <param name = "d">
-        ///   The d.
+        /// <param name="d">
+        /// The d.
         /// </param>
-        /// <param name = "e">
-        ///   The e.
+        /// <param name="e">
+        /// The e.
         /// </param>
         private static void OnValueConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -106,15 +108,15 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   The set transform.
+        /// The set transform.
         /// </summary>
-        /// <param name = "d">
-        ///   The d.
+        /// <param name="d">
+        /// The d.
         /// </param>
-        /// <param name = "transformation">
-        ///   The transformation.
+        /// <param name="transformation">
+        /// The transformation.
         /// </param>
-        /// <exception cref = "InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// </exception>
         private static void SetTransform(DependencyObject d, ValueTransform transformation)
         {
@@ -133,13 +135,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   The convert.
+        /// The convert.
         /// </summary>
-        /// <param name = "value">
-        ///   The value.
+        /// <param name="value">
+        /// The value.
         /// </param>
         /// <returns>
-        ///   The convert.
+        /// The convert.
         /// </returns>
         public string Convert(object value)
         {
@@ -147,13 +149,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Decide which formating to apply given the value transform value
+        /// Decide which formating to apply given the value transform value
         /// </summary>
-        /// <param name = "value">
-        ///   Value to format
+        /// <param name="value">
+        /// Value to format
         /// </param>
         /// <returns>
-        ///   Formated value
+        /// Formated value
         /// </returns>
         private string ReturnConvert(object value)
         {
@@ -176,13 +178,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Format value type values with a given string formating mask
+        /// Format value type values with a given string formating mask
         /// </summary>
-        /// <param name = "value">
-        ///   Original Value to format
+        /// <param name="value">
+        /// Original Value to format
         /// </param>
         /// <returns>
-        ///   String formated value
+        /// String formated value
         /// </returns>
         private string TextFormating(object value)
         {
@@ -220,24 +222,24 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         #region Nested type: ValueTransform
 
         /// <summary>
-        ///   The value transform.
+        /// The value transform.
         /// </summary>
         protected enum ValueTransform
         {
             /// <summary>
             ///   The none.
             /// </summary>
-            None,
+            None, 
 
             /// <summary>
             ///   The text format.
             /// </summary>
-            TextFormat,
+            TextFormat, 
 
             /// <summary>
             ///   The value converter.
             /// </summary>
-            ValueConverter,
+            ValueConverter, 
         }
 
         #endregion

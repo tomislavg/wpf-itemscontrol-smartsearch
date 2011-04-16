@@ -5,23 +5,28 @@
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
     /// <summary>
-    /// Indicate where to place the show/hide button of the control
+    /// The layout config option.
     /// </summary>
-    internal enum ShowHideButtonLocationValue
+    public enum LayoutConfigOption
     {
         /// <summary>
-        ///   The none.
+        ///   The minimal.
         /// </summary>
-        None, 
+        Minimal, 
 
         /// <summary>
-        ///   The top.
+        ///   The basic.
         /// </summary>
-        Top, 
+        Basic, 
 
         /// <summary>
-        ///   The bottom.
+        ///   The intemediate.
         /// </summary>
-        Bottom
+        Intemediate, 
+
+        /// <summary>
+        ///   The full.
+        /// </summary>
+        Full, 
     }
 }

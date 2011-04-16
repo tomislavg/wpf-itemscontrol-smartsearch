@@ -57,6 +57,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SmartSearch\LayoutConfigOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmartSearch\DelayedAction.cs" />
     <Compile Include="SmartSearch\FilterMode.cs" />

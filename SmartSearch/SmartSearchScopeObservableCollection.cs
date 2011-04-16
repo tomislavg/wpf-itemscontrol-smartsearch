@@ -1,19 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SmartSearchScopeObservableCollection.cs" company="dotnetexplorer.blog.com">
-//   2011
-// </copyright>
-// <summary>
-//   Derived class used to be able to manage filter application when a collection item property changed
-//   whithout having to do a refresh
-// </summary>
+// http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-
     /// <summary>
     /// Derived class used to be able to manage filter application when a collection item property changed
     ///   whithout having to do a refresh
