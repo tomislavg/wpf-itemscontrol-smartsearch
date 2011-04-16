@@ -1,10 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs"company="dotnetexplorer.blog.com">
-//   2011
-// </copyright>
-// <summary>
-//   AssemblyInfo.cs
-// </summary>
+// http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
@@ -45,4 +40,5 @@ using System.Windows;
 //      Revision
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
+
 [assembly: AssemblyVersion("1.0.*")]

@@ -1,20 +1,14 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DelayedAction.cs" company="dotnetexplorer.blog.com">
-//   2011
-// </copyright>
-// <summary>
-//   This class holds the logic that handle the execution of a delayed/differed action
-// </summary>
+// http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
-    using System;
-    using System.Threading;
-    using System.Windows;
-    using System.Windows.Threading;
-
     /// <summary>
     /// This class holds the logic that handle the execution of a delayed/differed action
     /// </summary>

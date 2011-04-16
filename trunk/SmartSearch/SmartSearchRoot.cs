@@ -1,26 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SmartSearchRoot.cs" company="dotnetexplorer.blog.com">
-//   2011
-// </copyright>
-// <summary>
-//   Smart Search custom control
-// </summary>
+// http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows.Media;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
-
     /// <summary>
     /// Smart Search custom control
     /// </summary>
+    [TemplatePart(Name = "PART_LblSearch")]
     [TemplatePart(Name = "PART_TxtInputSs")]
     [TemplatePart(Name = "PART_ToggleCpntVisibilityBtn")]
     [TemplatePart(Name = "PART_BtnSwitchAndOr")]
@@ -57,6 +51,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         private Button PART_BtnSwitchAndOr;
 
         /// <summary>
+        ///   Filter label
+        /// </summary>
+        private TextBlock PART_LblSearch;
+
+        /// <summary>
         ///   Show/Hide button control
         /// </summary>
         private ToggleButton PART_ToggleCpntVisibilityBtn;
@@ -65,6 +64,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         ///   User input textbox control
         /// </summary>
         private TextBox PART_TxtInputs;
+
+        /// <summary>
+        ///   Results label
+        /// </summary>
+        private TextBlock PART_TxtNbResults;
 
         /// <summary>
         ///   Delayed filter manager
@@ -107,8 +111,8 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         static SmartSearchRoot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SmartSearchRoot),
-                                                     new FrameworkPropertyMetadata(typeof(SmartSearchRoot)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (SmartSearchRoot), 
+                                                     new FrameworkPropertyMetadata(typeof (SmartSearchRoot)));
         }
 
         /// <summary>
@@ -133,14 +137,16 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
             base.OnApplyTemplate();
 
-
             PART_TxtInputs = GetTemplateChild("PART_TxtInputSs") as TextBox;
             PART_ToggleCpntVisibilityBtn = GetTemplateChild("PART_ToggleCpntVisibilityBtn") as ToggleButton;
             PART_BtnSwitchAndOr = GetTemplateChild("PART_BtnSwitchAndOr") as Button;
+            PART_LblSearch = GetTemplateChild("PART_LblSearch") as TextBlock;
+            PART_TxtNbResults = GetTemplateChild("PART_TxtNbResults") as TextBlock;
+
             if (PART_BtnSwitchAndOr != null)
             {
                 PART_BtnSwitchAndOr.Click += PartBtnSwitchAndOr;
-                var tb = new TextBlock { FontSize = 8, Text = filterMode.ToString() };
+                var tb = new TextBlock {FontSize = 8, Text = filterMode.ToString()};
                 PART_BtnSwitchAndOr.Content = tb;
             }
 
@@ -157,13 +163,43 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             // Subscribe to each scope results notifications
             foreach (object item in Items)
             {
-                var ssc = (SmartSearchScope)item;
+                var ssc = (SmartSearchScope) item;
 
                 ssc.IncreaseResultsEvent += SscIncreaseResultsEvent;
             }
 
             // Initialize toggle button margins
             ManageToggleButtonMargins();
+
+            switch (LayoutOption)
+            {
+                case LayoutConfigOption.Minimal:
+                    PART_LblSearch.Visibility = Visibility.Collapsed;
+                    PART_ToggleCpntVisibilityBtn.Visibility = Visibility.Collapsed;
+                    PART_BtnSwitchAndOr.Visibility = Visibility.Collapsed;
+                    PART_TxtNbResults.Visibility = Visibility.Collapsed;
+                    break;
+                case LayoutConfigOption.Basic:
+                    PART_LblSearch.Visibility = Visibility.Visible;
+                    PART_ToggleCpntVisibilityBtn.Visibility = Visibility.Collapsed;
+                    PART_BtnSwitchAndOr.Visibility = Visibility.Collapsed;
+                    PART_TxtNbResults.Visibility = Visibility.Visible;
+                    break;
+                case LayoutConfigOption.Intemediate:
+                    PART_LblSearch.Visibility = Visibility.Visible;
+                    PART_ToggleCpntVisibilityBtn.Visibility = Visibility.Collapsed;
+                    PART_BtnSwitchAndOr.Visibility = Visibility.Visible;
+                    PART_TxtNbResults.Visibility = Visibility.Visible;
+                    break;
+                case LayoutConfigOption.Full:
+                    PART_LblSearch.Visibility = Visibility.Visible;
+                    PART_ToggleCpntVisibilityBtn.Visibility = Visibility.Visible;
+                    PART_BtnSwitchAndOr.Visibility = Visibility.Visible;
+                    PART_TxtNbResults.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         /// <summary>
@@ -178,7 +214,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         private void PartBtnSwitchAndOr(object sender, RoutedEventArgs e)
         {
             filterMode = filterMode == FilterMode.AND ? FilterMode.OR : FilterMode.AND;
-            var tb = new TextBlock { FontSize = 8, Text = filterMode.ToString() };
+            var tb = new TextBlock {FontSize = 8, Text = filterMode.ToString()};
             PART_BtnSwitchAndOr.Content = tb;
             filterModeHasChanged = true;
             ApplySearchCriteria();
@@ -205,8 +241,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                     tgb.Margin = runtimeComponentVisibleMargin;
                 }
 
-
-                // if not
+                    // if not
                 else
                 {
                     // set initialization margins
@@ -275,10 +310,8 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
             if (control != null)
             {
                 FilterTextChanged(control.Text);
-
             }
         }
-
 
         /// <summary>
         /// Method handling the unsubscription to filtersearch in the case where input is empty after filter has been executed
@@ -290,7 +323,6 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         {
             searchInput = textInput;
             ExecuteFilter(); // When text search is set in the textbox, execute the filter action
-
 
             // ApplySearchCriteria();
         }
@@ -314,7 +346,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         private void ApplySearchCriteria()
         {
-            searchTerms = searchInput.Split(new[] { Separator }).ToList();
+            searchTerms = searchInput.Split(new[] {Separator}).ToList();
 
             // Manage if there is really a need to update filter (this excludes empty search string for example)
             bool filter = false;
@@ -341,7 +373,6 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 }
             }
 
-
             // If really need to updaet filter
             if (filter)
             {
@@ -362,29 +393,43 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
         #region DependencyProperties
 
-        // Using a DependencyProperty as the backing store for Results.  This enables animation, styling, binding, etc...
-
         /// <summary>
         ///   The results property.
         /// </summary>
         public static readonly DependencyProperty ResultsProperty =
-            DependencyProperty.Register("Results", typeof(string), typeof(SmartSearchRoot),
+            DependencyProperty.Register("Results", typeof (string), typeof (SmartSearchRoot), 
                                         new UIPropertyMetadata(string.Empty));
 
         /// <summary>
         ///   The show hide button location property.
         /// </summary>
         public static readonly DependencyProperty ShowHideButtonLocationProperty =
-            DependencyProperty.Register("ShowHideButtonLocation", typeof(object), typeof(SmartSearchRoot),
+            DependencyProperty.Register("ShowHideButtonLocation", typeof (object), typeof (SmartSearchRoot), 
                                         new UIPropertyMetadata("None", PinLocationChanged));
 
+        // Using a DependencyProperty as the backing store for LayoutOption.  This enables animation, styling, binding, etc...
+        /// <summary>
+        ///   The layout option property.
+        /// </summary>
+        public static readonly DependencyProperty LayoutOptionProperty =
+            DependencyProperty.Register("LayoutOption", typeof (LayoutConfigOption), typeof (SmartSearchRoot), 
+                                        new UIPropertyMetadata(LayoutConfigOption.Basic));
+
+        /// <summary>
+        ///   Gets or sets LayoutOption.
+        /// </summary>
+        public LayoutConfigOption LayoutOption
+        {
+            get { return (LayoutConfigOption) GetValue(LayoutOptionProperty); }
+            set { SetValue(LayoutOptionProperty, value); }
+        }
 
         /// <summary>
         ///   Expose the filter results number
         /// </summary>
         public string Results
         {
-            get { return (string)GetValue(ResultsProperty); }
+            get { return (string) GetValue(ResultsProperty); }
             private set { SetValue(ResultsProperty, value); }
         }
 
@@ -415,7 +460,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                 {
                     var testenum =
                         (ShowHideButtonLocationValue)
-                        Enum.Parse(typeof(ShowHideButtonLocationValue), e.NewValue.ToString());
+                        Enum.Parse(typeof (ShowHideButtonLocationValue), e.NewValue.ToString());
 
                     ssc.SetPinLocation(testenum);
                 }

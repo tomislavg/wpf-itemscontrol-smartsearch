@@ -1,10 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterMode.cs" company="dotnetexplorer.blog.com">
-//   2011
-// </copyright>
-// <summary>
-//   Indicate filter mode configuration (AND || OR)
-// </summary>
+// http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch

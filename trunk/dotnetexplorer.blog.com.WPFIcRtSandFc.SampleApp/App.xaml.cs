@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// http://dotnetexplorer.blog.com
+// --------------------------------------------------------------------------------------------------------------------
+
 using System.Windows;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp

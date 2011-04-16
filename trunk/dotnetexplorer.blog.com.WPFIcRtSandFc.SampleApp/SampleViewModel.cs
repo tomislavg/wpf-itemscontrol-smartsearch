@@ -1,13 +1,25 @@
-﻿using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// http://dotnetexplorer.blog.com
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
 {
-   
-    class SampleViewModel
+    /// <summary>
+    /// The sample view model.
+    /// </summary>
+    internal class SampleViewModel
     {
-        readonly ItemsPooler itemsPooler;
+        /// <summary>
+        ///   The items pooler.
+        /// </summary>
+        private readonly ItemsPooler itemsPooler;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "SampleViewModel" /> class.
+        /// </summary>
         public SampleViewModel()
         {
             itemsPooler = new ItemsPooler();
@@ -17,16 +29,27 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
             DataSourceInt = itemsPooler.GetIntSourceScopeOne();
         }
 
-        //2 types of collections to demonstrate that static filter works on both types of collections
-        //However, the first one won't notify smart search when receiving or removing items
+        // 2 types of collections to demonstrate that static filter works on both types of collections
+        // However, the first one won't notify smart search when receiving or removing items
+        /// <summary>
+        ///   Gets or sets DataSourceStrategies.
+        /// </summary>
         public List<StrategyAdapter> DataSourceStrategies { get; set; }
 
+        /// <summary>
+        ///   Gets or sets DataSourceMarkets.
+        /// </summary>
         public ObservableCollection<MarketAdapter> DataSourceMarkets { get; set; }
 
 
+        /// <summary>
+        ///   Gets or sets DataSourceString.
+        /// </summary>
         public IEnumerable<string> DataSourceString { get; set; }
 
+        /// <summary>
+        ///   Gets or sets DataSourceInt.
+        /// </summary>
         public IEnumerable<int> DataSourceInt { get; set; }
-
     }
 }

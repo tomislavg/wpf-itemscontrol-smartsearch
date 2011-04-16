@@ -1,29 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SmartSearchScope.cs" company="dotnetexplorer.blog.com">
-//   2011
-// </copyright>
-// <summary>
-//   This class repersents a search scope defined by a ICollectionView and a FilterColumns property
-//   The filter execution is delegated to this class by the main smart search control which unique purpose is now to
-//   get the user input.
-// </summary>
+// http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Data;
-
     /// <summary>
-    ///   This class repersents a search scope defined by a ICollectionView and a FilterColumns property
+    /// This class repersents a search scope defined by a ICollectionView and a FilterColumns property
     ///   The filter execution is delegated to this class by the main smart search control which unique purpose is now to
     ///   get the user input.
     /// </summary>
@@ -34,8 +27,11 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         private const string PropertyValueMaskCache = "{0} ";
 
+        /// <summary>
+        ///   The default monitor property changes property.
+        /// </summary>
         public static readonly DependencyProperty DefaultMonitorPropertyChangesProperty =
-            DependencyProperty.Register("DefaultMonitorPropertyChanges", typeof(bool), typeof(SmartSearchScope),
+            DependencyProperty.Register("DefaultMonitorPropertyChanges", typeof (bool), typeof (SmartSearchScope), 
                                         new UIPropertyMetadata(false));
 
         /// <summary>
@@ -47,14 +43,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         ///   DataControl Dependency property
         /// </summary>
         public static readonly DependencyProperty DataControlProperty =
-            DependencyProperty.Register("DataControl", typeof(ItemsControl), typeof(SmartSearchScope),
+            DependencyProperty.Register("DataControl", typeof (ItemsControl), typeof (SmartSearchScope), 
                                         new UIPropertyMetadata(null, OnDataControlChanged));
 
         /// <summary>
         ///   Underlying type Dependency property
         /// </summary>
         public static readonly DependencyProperty UnderlyingTypeProperty =
-            DependencyProperty.Register("UnderlyingType", typeof(Type), typeof(SmartSearchScope),
+            DependencyProperty.Register("UnderlyingType", typeof (Type), typeof (SmartSearchScope), 
                                         new UIPropertyMetadata(null));
 
         /// <summary>
@@ -136,9 +132,9 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         {
             concatTestValue =
                 (Func<object, string>)
-                Delegate.CreateDelegate(typeof(Func<object, string>), this, "GetConcatenatedCandidateValue", true);
+                Delegate.CreateDelegate(typeof (Func<object, string>), this, "GetConcatenatedCandidateValue", true);
 
-            initialize = (Action)Delegate.CreateDelegate(typeof(Action), this, "InitializeFilterScope", true);
+            initialize = (Action) Delegate.CreateDelegate(typeof (Action), this, "InitializeFilterScope", true);
         }
 
         /// <summary>
@@ -147,7 +143,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         public bool DefaultMonitorPropertyChanges
         {
-            get { return (bool)GetValue(DefaultMonitorPropertyChangesProperty); }
+            get { return (bool) GetValue(DefaultMonitorPropertyChangesProperty); }
             set { SetValue(DefaultMonitorPropertyChangesProperty, value); }
         }
 
@@ -156,7 +152,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         public ItemsControl DataControl
         {
-            get { return (ItemsControl)GetValue(DataControlProperty); }
+            get { return (ItemsControl) GetValue(DataControlProperty); }
             set { SetValue(DataControlProperty, value); }
         }
 
@@ -166,7 +162,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         /// </summary>
         public Type UnderlyingType
         {
-            get { return (Type)GetValue(UnderlyingTypeProperty); }
+            get { return (Type) GetValue(UnderlyingTypeProperty); }
             set { SetValue(UnderlyingTypeProperty, value); }
         }
 
@@ -185,54 +181,65 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Method called when FilterColumns property changes
+        /// Method called when FilterColumns property changes
         /// </summary>
-        /// <exception cref = "InvalidOperationException">
-        ///   Raised when a a property filter refers to a non existing candidate object type property
+        /// <exception cref="InvalidOperationException">
+        /// Raised when a a property filter refers to a non existing candidate object type property
         /// </exception>
         private void SetFilterColumns()
         {
             var propertyFilters = Items.Cast<ValueFilter>().ToList();
 
-            if (UnderlyingType.Equals(typeof(string)) || UnderlyingType.IsValueType)
+            if (UnderlyingType.Equals(typeof (string)) || UnderlyingType.IsValueType)
             {
-                //for native types, only one ValueFilter accepted to apply string format or IValueConverter 
+                // for native types, only one ValueFilter accepted to apply string format or IValueConverter 
                 if (propertyFilters.Count > 1)
                 {
                     throw new InvalidOperationException(
                         "Only one property filter is authorized when underlying type is String or a value type.");
                 }
-                //Then if there is no property filter at all, there is no conversion needed and we build a defautl property getter
-                //and there is one, we build a property getter accordingly
+
+
+// Then if there is no property filter at all, there is no conversion needed and we build a defautl property getter
+                // and there is one, we build a property getter accordingly
                 _valueGetters.Add(propertyFilters.Count == 0
                                       ? new PropertyFilterValueGetter(new ValueFilter())
                                       : new PropertyFilterValueGetter(propertyFilters[0]));
             }
-            //if the underlying type if neither a string nor value type, then it is a reference type
+                
+
+// if the underlying type if neither a string nor value type, then it is a reference type
             else
             {
                 IEnumerable<PropertyFilter> apfs;
-                //if there is no PropertyFilter defined, we build it by default based on every instance public properties of the underlying type
+
+
+// if there is no PropertyFilter defined, we build it by default based on every instance public properties of the underlying type
                 if (propertyFilters.Count == 0)
                 {
                     apfs = new List<PropertyFilter>();
-                    // Get the type Properties
+
+
+// Get the type Properties
                     var pis = UnderlyingType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                    //iterate
+
+
+// iterate
                     foreach (var propertyInfo in pis)
                     {
                         var pf = new PropertyFilter(propertyInfo.Name, DefaultMonitorPropertyChanges);
-                        var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType);//Generate...
-                        _valueGetters.Add(pfvg);//...and add value getter for each properties
+                        var pfvg = new PropertyFilterValueGetter(pf, UnderlyingType); // Generate...
+                        _valueGetters.Add(pfvg); // ...and add value getter for each properties
                     }
                 }
                 else
                 {
-                    //and thus every ValueFilter must be PropertyFilter
+                    // and thus every ValueFilter must be PropertyFilter
                     if (propertyFilters.Any(p => !(p is PropertyFilter)))
                     {
                         throw new InvalidOperationException("ValueFilter can't be used with reference type.");
                     }
+
                     apfs = propertyFilters.Cast<PropertyFilter>().ToList();
                     foreach (PropertyFilter pf in apfs)
                     {
@@ -243,7 +250,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                         if (pi == null)
                         {
                             throw new InvalidOperationException(
-                                string.Format("Cant't find the property {0} for type {1}",
+                                string.Format("Cant't find the property {0} for type {1}", 
                                               pf.FieldName, UnderlyingType.Name));
                         }
 
@@ -260,13 +267,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   Callback executed when DataControl property value changed
+        /// Callback executed when DataControl property value changed
         /// </summary>
-        /// <param name = "d">
-        ///   Dependency object on which the data control has been set (here a SmartSearchScope object)
+        /// <param name="d">
+        /// Dependency object on which the data control has been set (here a SmartSearchScope object)
         /// </param>
-        /// <param name = "e">
-        ///   Argument containing the new binding value
+        /// <param name="e">
+        /// Argument containing the new binding value
         /// </param>
         private static void OnDataControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -278,21 +285,21 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Subscribe to Datacontrol ItemsSource changes
+        /// Subscribe to Datacontrol ItemsSource changes
         /// </summary>
         private void Subscribe()
         {
-            _sourcePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty,
-                                                                                  typeof(ItemsControl));
+            _sourcePropertyDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty, 
+                                                                                  typeof (ItemsControl));
             _sourcePropertyDescriptor.AddValueChanged(DataControl, SourceChanged);
         }
 
         /// <summary>
-        ///   When detecting a source change, initialize the cache
+        /// When detecting a source change, initialize the cache
         /// </summary>
-        /// <param name = "sender">
+        /// <param name="sender">
         /// </param>
-        /// <param name = "e">
+        /// <param name="e">
         /// </param>
         private void SourceChanged(object sender, EventArgs e)
         {
@@ -306,10 +313,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         public event EventHandler IncreaseResultsEvent;
 
         /// <summary>
-        ///   The invoke increase results event.
+        /// The invoke increase results event.
         /// </summary>
-        /// <param name = "e">
-        ///   The e.
+        /// <param name="e">
+        /// The e.
         /// </param>
         private void InvokeIncreaseResultsEvent(EventArgs e)
         {
@@ -318,7 +325,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Call the notify results event invoker
+        /// Call the notify results event invoker
         /// </summary>
         private void NotifyResults()
         {
@@ -326,12 +333,12 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Method called from the SmartSearch component
+        /// Method called from the SmartSearch component
         /// </summary>
-        /// <param name = "terms">
-        ///   List of search terms passed to search scope
+        /// <param name="terms">
+        /// List of search terms passed to search scope
         /// </param>
-        /// <param name = "filtertypeMode">
+        /// <param name="filtertypeMode">
         /// </param>
         public void ApplySearchCriteria(IEnumerable<string> terms, FilterMode filtertypeMode)
         {
@@ -354,7 +361,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Main method for applying filter
+        /// Main method for applying filter
         /// </summary>
         private void ApplySearchCriteria()
         {
@@ -374,14 +381,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Main method which will evaluate if an object si a valid candidate to be included in the view
+        /// Main method which will evaluate if an object si a valid candidate to be included in the view
         ///   depending on the user filter input
         /// </summary>
-        /// <param name = "candidate">
-        ///   Candiate object
+        /// <param name="candidate">
+        /// Candiate object
         /// </param>
         /// <returns>
-        ///   Object is/is not candidate for the inclusion in the view
+        /// Object is/is not candidate for the inclusion in the view
         /// </returns>
         private bool FilterSearch(object candidate)
         {
@@ -437,13 +444,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Get string concatenated formated value for a candidate
+        /// Get string concatenated formated value for a candidate
         /// </summary>
-        /// <param name = "candidate">
-        ///   Candidate for which to retreive values
+        /// <param name="candidate">
+        /// Candidate for which to retreive values
         /// </param>
         /// <returns>
-        ///   Formatted values (serparated given the mask previously declared)
+        /// Formatted values (serparated given the mask previously declared)
         /// </returns>
         private string GetConcatenatedCandidateValue(object candidate)
         {
@@ -457,7 +464,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Initialize the candidate cache
+        /// Initialize the candidate cache
         /// </summary>
         private void InitializeFilterScope()
         {
@@ -484,7 +491,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
 
 
         /// <summary>
-        ///   Set custom datasource to the datacontrol
+        /// Set custom datasource to the datacontrol
         /// </summary>
         private void SetDataControlsource()
         {
@@ -498,14 +505,14 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Callback executed when the original source notify add/remove of items
+        /// Callback executed when the original source notify add/remove of items
         ///   Used to synchronize original source with copy of the original source
         /// </summary>
-        /// <param name = "sender">
-        ///   Original source collection
+        /// <param name="sender">
+        /// Original source collection
         /// </param>
-        /// <param name = "e">
-        ///   Added/removed items
+        /// <param name="e">
+        /// Added/removed items
         /// </param>
         private void OriginalSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -527,10 +534,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Manage actions when an item is removed from the original collection
+        /// Manage actions when an item is removed from the original collection
         /// </summary>
-        /// <param name = "o">
-        ///   Removed item
+        /// <param name="o">
+        /// Removed item
         /// </param>
         private void ManageItemRemove(object o)
         {
@@ -548,10 +555,10 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Manage actions when an item is added to the original collection
+        /// Manage actions when an item is added to the original collection
         /// </summary>
-        /// <param name = "o">
-        ///   Added item
+        /// <param name="o">
+        /// Added item
         /// </param>
         private void ManageItemAdd(object o)
         {
@@ -572,13 +579,13 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
         }
 
         /// <summary>
-        ///   Callback executed when an item's property gets updated
+        /// Callback executed when an item's property gets updated
         /// </summary>
-        /// <param name = "sender">
-        ///   Items
+        /// <param name="sender">
+        /// Items
         /// </param>
-        /// <param name = "e">
-        ///   Argument containing the name of the property that raised the changes
+        /// <param name="e">
+        /// Argument containing the name of the property that raised the changes
         /// </param>
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -595,9 +602,9 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
                     // we simulate a replace to the collection because the filter is automatically applied in this case
                     int index = _substituteSource.IndexOf(sender);
 
-                    var argsReplace = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace,
-                                                                           new List<object> { sender },
-                                                                           new List<object> { sender }, index);
+                    var argsReplace = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, 
+                                                                           new List<object> {sender}, 
+                                                                           new List<object> {sender}, index);
                     _substituteSource.RaiseCollectionChanged(argsReplace);
                 }
 
