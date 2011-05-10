@@ -10,23 +10,23 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SmartSearch
     public enum LayoutConfigOption
     {
         /// <summary>
-        ///   The minimal.
+        ///   Only filter input is visible
         /// </summary>
-        Minimal, 
+        Minimal,
 
         /// <summary>
-        ///   The basic.
+        ///   Minimal plus "Filter" and number of items labels are visibles
         /// </summary>
-        Basic, 
+        Basic,
 
         /// <summary>
-        ///   The intemediate.
+        ///   Basic plus AND / OR switch is visible
         /// </summary>
-        Intemediate, 
+        Intemediate,
 
         /// <summary>
-        ///   The full.
+        ///   Intermediate plus toggle visibility buton is visible
         /// </summary>
-        Full, 
+        Full,
     }
 }
