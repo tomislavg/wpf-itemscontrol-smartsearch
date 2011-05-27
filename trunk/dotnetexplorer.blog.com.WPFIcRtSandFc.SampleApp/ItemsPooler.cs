@@ -50,7 +50,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
                        {
                            new StrategyAdapter
                                {
-                                   SendTime = "22:11:12", 
+                                   SendTime =new DateTime(11,11,12,14,23,56,896), 
                                    StratStat = StrategyStatus.Done, 
                                    StratType = StrategyType.IOCSweep, 
                                    Dir = Direction.Sell, 
@@ -64,7 +64,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
                                }, 
                            new StrategyAdapter
                                {
-                                   SendTime = "12:05:25", 
+                                   SendTime  =new DateTime(11,11,12,14,28,36,196), 
                                    StratStat = StrategyStatus.Cancelled, 
                                    StratType = StrategyType.SimpleOrder, 
                                    Dir = Direction.Buy, 
@@ -78,7 +78,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
                                }, 
                            new StrategyAdapter
                                {
-                                   SendTime = "18:56:03", 
+                                   SendTime  =new DateTime(11,12,2,9,13,0,0), 
                                    StratStat = StrategyStatus.InError, 
                                    StratType = StrategyType.GTCSweep, 
                                    Dir = Direction.Buy, 
@@ -92,7 +92,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
                                }, 
                            new StrategyAdapter
                                {
-                                   SendTime = "08:41:23", 
+                                   SendTime  =new DateTime(11,10,23,19,28,56,596), 
                                    StratStat = StrategyStatus.Done, 
                                    StratType = StrategyType.IOCSweep, 
                                    Dir = Direction.Buy, 
@@ -160,7 +160,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         /// </returns>
         private StrategyStatus GetStrategyStatusByRandomNumber(int rnd)
         {
-            return (StrategyStatus) rnd;
+            return (StrategyStatus)rnd;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         /// </returns>
         private StrategyType GetStrategyTypeByRandomNumber(int rnd)
         {
-            return (StrategyType) rnd;
+            return (StrategyType)rnd;
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         /// </returns>
         private Direction GetDirectionByRandomNumber(int rnd)
         {
-            return (Direction) rnd;
+            return (Direction)rnd;
         }
 
         /// <summary>

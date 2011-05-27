@@ -2,6 +2,8 @@
 // http://dotnetexplorer.blog.com
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
 {
     /// <summary>
@@ -12,7 +14,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         /// <summary>
         ///   Gets or sets SendTime.
         /// </summary>
-        public string SendTime { get; set; }
+        public DateTime SendTime { get; set; }
 
         /// <summary>
         ///   Gets or sets StratStat.
