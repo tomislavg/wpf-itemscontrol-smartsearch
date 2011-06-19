@@ -17,7 +17,7 @@ namespace dotnetexplorer.blog.com.WPFIcRtSandFc.SampleApp
         public Sample()
         {
             InitializeComponent();
-            DataContext = new SampleViewModel();
+            DataContext = new SampleViewModel(Dispatcher);
         }
     }
 }
